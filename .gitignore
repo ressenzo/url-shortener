@@ -52,38 +52,6 @@ ScaffoldingReadMe.txt
 # DotCover
 .idea/.dotCover
 
-# ---- React ----
-node_modules/
-build/
-.env
-.env.*.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-yarn.lock
-.pnp*
-.cache/
-public/static/
-coverage/
-.vite/
-
-# Optional: OS/Editor files
-Thumbs.db
-.DS_Store
-*.log
-*.tmp
-
-# ---- General ----
-*.bak
-*.orig
-*.rej
-*.swp
-*.swo
-*.tmp
-*.temp
-*.log
-
 # If using GitHub Codespaces or Visual Studio Code
 .vscode/
 .history/
