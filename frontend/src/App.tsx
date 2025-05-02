@@ -4,10 +4,10 @@ import Result from './components/Result/Result';
 
 const App = () => {
     return (
-        <div className="app">
+        <main className="app justify-content-center vh-100 d-flex w-100 h-100 p-3 mx-auto flex-column">
             <Input />
             <Result />
-        </div>
+        </main>
     );
 }
 

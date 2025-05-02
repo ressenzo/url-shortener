@@ -1,0 +1,10 @@
+input.form-control {
+    padding: .6rem .9rem;
+    font-size: 1.2rem;
+    border: 1px solid #acb0b3;
+}
+
+input.form-control:focus {
+    box-shadow: none;
+    border: 1px solid #0dcaf0;
+}
