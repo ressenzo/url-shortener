@@ -12,10 +12,8 @@ const Input = ({ setResult }: InputProps) => {
     const [error, setError] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value === "") {
-            setError("");
-            setResult(undefined);
-        }
+        setError('');
+        setResult('');
         setUrl(e.target.value)
     }
 
