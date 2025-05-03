@@ -5,7 +5,7 @@ interface InputProps {
     setResult: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const URL_REGEX: RegExp = /^(https?:\/\/)?([\w\-]+\.)+[\w\-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+const URL_REGEX: RegExp = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
 
 const Input = ({ setResult }: InputProps) => {
     const [url, setUrl] = useState<string>('');
