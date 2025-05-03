@@ -1,11 +1,23 @@
 import { useState } from "react";
 import './Input.css';
 
-const Input = () => {
+interface InputProps {
+    setResult: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
+const Input = ({ setResult }: InputProps) => {
     const [url, setUrl] = useState<string>('');
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value === "") {
+            setResult(undefined);
+        }
+        setUrl(e.target.value)
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setResult(url);
     }
 
     return (
@@ -16,7 +28,7 @@ const Input = () => {
                         className="form-control"
                         type="text"
                         placeholder="Input your URL here"
-                        onChange={e => setUrl(e.target.value)}
+                        onChange={handleChange}
                         id="url-value"
                         autoComplete="off"
                     />

@@ -12,7 +12,7 @@ const Result = ({ result }: ResultProps) => {
     }
 
     return (
-        <div className={`result mt-4 ${result === "" ? "result-hidden" : undefined}`}>
+        <div className={`result mt-4 ${result === undefined ? "result-hidden" : undefined}`}>
             <p className="result-text">Your result</p>
             <div className="input-group">
                 <input
