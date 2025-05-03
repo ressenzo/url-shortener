@@ -9,7 +9,9 @@ const App = () => {
                 <h1 className="display-3">Url Shortener</h1>
             </div>
             <Input />
-            <Result />
+            <Result
+                result=""
+            />
         </main>
     );
 }

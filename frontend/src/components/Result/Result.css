@@ -1,0 +1,8 @@
+.result-hidden {
+    visibility: hidden;
+}
+
+p.result-text {
+    font-size: 1.4rem;
+    margin-bottom: .2rem;
+}
