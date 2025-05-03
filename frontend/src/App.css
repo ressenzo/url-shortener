@@ -1,3 +1,7 @@
 .app {
     max-width: 700px;
 }
+
+.app-title {
+    min-height: 100px;
+}
