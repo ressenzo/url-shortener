@@ -5,8 +5,8 @@ import Result from './components/Result/Result';
 
 const TITLE: string = "Url Shortener";
 const App = () => {
-    const [result, setResult] = useState<string>();
 
+    const [result, setResult] = useState<string>('');
 
     return (
         <main className="app p-4 vh-100 d-flex w-100 h-100 mx-auto flex-column">

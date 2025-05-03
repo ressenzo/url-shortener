@@ -1,18 +1,18 @@
+import { useEffect, useState } from 'react';
 import './Result.css';
 
 interface ResultProps {
     result: string;
 }
 
-const Result = ({ result }: ResultProps) => {
-
+const Result = ({ result = '' }: ResultProps) => {
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(result);
     }
 
     return (
-        <div className={`result mt-4 ${result === undefined ? "result-hidden" : undefined}`}>
+        <div className={`result mt-4 ${result === '' ? "result-hidden" : undefined}`}>
             <p className="result-text">Your result</p>
             <div className="input-group">
                 <input

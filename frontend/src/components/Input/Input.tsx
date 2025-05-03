@@ -2,7 +2,7 @@ import { useState } from "react";
 import './Input.css';
 
 interface InputProps {
-    setResult: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setResult: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const URL_REGEX: RegExp = /^(https?:\/\/)?([\w\-]+\.)+[\w\-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
