@@ -5,11 +5,15 @@ interface InputProps {
     setResult: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
+const URL_REGEX: RegExp = /^(https?:\/\/)?([\w\-]+\.)+[\w\-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+
 const Input = ({ setResult }: InputProps) => {
     const [url, setUrl] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value === "") {
+            setError("");
             setResult(undefined);
         }
         setUrl(e.target.value)
@@ -17,6 +21,10 @@ const Input = ({ setResult }: InputProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!URL_REGEX.test(url)) {
+            setError("Please, input a valid URL");
+            return;
+        }
         setResult(url);
     }
 
@@ -40,6 +48,7 @@ const Input = ({ setResult }: InputProps) => {
                     </button>
                 </div>
             </form>
+            <p className="text-danger">{error}</p>
         </div>
     )
 }
