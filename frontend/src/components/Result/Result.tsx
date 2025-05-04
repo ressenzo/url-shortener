@@ -1,23 +1,23 @@
 import './Result.css';
 
 interface ResultProps {
-    result: string;
+    shortenedUrl: string;
 }
 
-const Result = ({ result = '' }: ResultProps) => {
+const Result = ({ shortenedUrl = '' }: ResultProps) => {
 
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(result);
+        await navigator.clipboard.writeText(shortenedUrl);
     }
 
     return (
-        <div className={`result mt-4 ${result === '' ? "result-hidden" : undefined}`}>
+        <div className={`result mt-4 ${shortenedUrl === '' ? "result-hidden" : undefined}`}>
             <p className="result-text">Your result</p>
             <div className="input-group">
                 <input
                     className="form-control"
                     type="text"
-                    value={result}
+                    value={shortenedUrl}
                     aria-label="readonly input example"
                     readOnly={true}
                 />

@@ -2,28 +2,29 @@ import { useState } from "react";
 import './Input.css';
 
 interface InputProps {
-    setResult: React.Dispatch<React.SetStateAction<string>>;
+    setShortenedUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const URL_REGEX: RegExp = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
 
-const Input = ({ setResult }: InputProps) => {
-    const [url, setUrl] = useState<string>('');
+const Input = ({ setShortenedUrl }: InputProps) => {
+    const [originalUrl, setOriginalUrl] = useState<string>('');
     const [error, setError] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError('');
-        setResult('');
-        setUrl(e.target.value)
+        setShortenedUrl('');
+        setOriginalUrl(e.target.value)
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!URL_REGEX.test(url)) {
+        if (!URL_REGEX.test(originalUrl)) {
             setError("Please, input a valid URL");
             return;
         }
-        setResult(url);
+        // TODO: change it to set api result
+        setShortenedUrl(originalUrl);
     }
 
     return (
@@ -40,7 +41,7 @@ const Input = ({ setResult }: InputProps) => {
                     />
                     <button
                         className="btn btn-info"
-                        disabled={url === ""}
+                        disabled={originalUrl === ""}
                         type="submit">
                         Generate
                     </button>
