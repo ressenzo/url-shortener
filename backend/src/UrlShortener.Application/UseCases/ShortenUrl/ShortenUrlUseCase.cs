@@ -12,15 +12,15 @@ internal sealed class ShortenUrlUseCase(
     IUrlService urlService) : IShortenUrlUseCase
 {
     public async Task<Result<ShortenUrlResponse>> ShortenUrl(
-        string server,
+        string host,
         string originalUrl,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(server))
+        if (string.IsNullOrWhiteSpace(host))
         {
-            logger.LogInformation("Server was not provided");
+            logger.LogInformation("Host was not provided");
             return Result<ShortenUrlResponse>.ValidationError(
-                errors: ["Server was not provided"]);
+                errors: ["Host was not provided"]);
         }
         var url = Url.Factory(
             originalUrl);
@@ -32,7 +32,7 @@ internal sealed class ShortenUrlUseCase(
 
         await urlRepository.CreateUrl(url, cancellationToken);
         var shortenedUrl = urlService.GetUrl(
-            server,
+            host,
             url.Id);
         var response = new ShortenUrlResponse()
         {

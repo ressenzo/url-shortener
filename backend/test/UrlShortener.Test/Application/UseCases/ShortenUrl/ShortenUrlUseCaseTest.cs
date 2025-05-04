@@ -28,18 +28,18 @@ public class ShortenUrlUseCaseTest
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null!)]
-    public async Task ShortenUrl_ShouldReturnValidationError_WhenServerIsNotValid(
-        string? server)
+    public async Task ShortenUrl_ShouldReturnValidationError_WhenHostIsNotValid(
+        string? host)
     {
         // Arrange - Act
         var result = await _useCase.ShortenUrl(
-            server!,
+            host!,
             It.IsAny<string>(),
             It.IsAny<CancellationToken>());
         
         // Assert
         result.Status.ShouldBe(ResultStatus.ValidationError);
-        result.Errors.First().ShouldBe("Server was not provided");
+        result.Errors.First().ShouldBe("Host was not provided");
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class ShortenUrlUseCaseTest
         
         // Act
         var result = await _useCase.ShortenUrl(
-            server: "server",
+            host: "host",
             invalidUrl!,
             It.IsAny<CancellationToken>());
         
@@ -62,7 +62,7 @@ public class ShortenUrlUseCaseTest
     public async Task ShortenUrl_ShouldReturnSuccess_WhenUrlIsValid()
     {
         // Arrange
-        string validServer = "http://localhost:5100";
+        string validHost = "http://localhost:5100";
         string validUrl = "http://google.com";
         _urlService.Setup(x => x.GetUrl(
                 It.IsAny<string>(),
@@ -71,7 +71,7 @@ public class ShortenUrlUseCaseTest
         
         // Act
         var result = await _useCase.ShortenUrl(
-            validServer,
+            validHost,
             validUrl,
             It.IsAny<CancellationToken>());
         

@@ -10,13 +10,13 @@ public class UrlServiceTest
     public void GetUrl_ShouldReturnUrl()
     {
         // Arrange
-        var server = "http://localhost:3000";
+        var host = "http://localhost:3000";
         var id = "1a2b";
 
         // Act
-        var shortenUrl = _service.GetUrl(server, id);
+        var shortenUrl = _service.GetUrl(host, id);
 
         // Assert
-        shortenUrl.ShouldBe($"{server}/{id}");
+        shortenUrl.ShouldBe($"{host}/{id}");
     }
 }
