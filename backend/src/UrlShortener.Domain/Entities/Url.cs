@@ -4,23 +4,22 @@ public class Url : Entity
 {
     private Url(
         string id,
-        string orignialUrl) : base(id)
-    {
-        OriginalUrl = orignialUrl;
-    }
+        string originalUrl)
+            : base(id) =>
+        OriginalUrl = originalUrl;
 
-    private Url(
-        string orignialUrl) : base(id: null)
-    {
-        OriginalUrl = orignialUrl;
-    }
+    private Url(string originalUrl)
+            : base(id: null) =>
+        OriginalUrl = originalUrl;
 
     public string OriginalUrl { get; }
 
     public static Url Factory(
         string id,
         string originalUrl) =>
-        new(id, originalUrl);
+        new(
+            id,
+            originalUrl);
 
     public static Url Factory(
         string originalUrl) =>
