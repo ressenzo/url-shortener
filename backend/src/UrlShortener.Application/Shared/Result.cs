@@ -1,16 +1,20 @@
+using System.Text.Json.Serialization;
+
 namespace UrlShortener.Application.Shared;
 
-public class Result
+public abstract class BaseResult
 {
     private readonly List<string> _errors = [];
 
+    [JsonIgnore]
     public bool IsSuccess { get; }
     
     public IEnumerable<string> Errors => _errors;
 
+    [JsonIgnore]
     public ResultStatus Status { get; }
 
-    protected Result(
+    protected BaseResult(
         bool isSuccess,
         IEnumerable<string> errors,
         ResultStatus status)
@@ -21,7 +25,23 @@ public class Result
     }
 }
 
-public class Result<T> : Result where T : class
+public class Result : BaseResult
+{
+    private Result(
+        bool isSuccess,
+        IEnumerable<string> errors,
+        ResultStatus status)
+            : base(isSuccess, errors, status)
+    { }
+
+    public static Result InternalServerError() =>
+        new(
+            isSuccess: false,
+            errors: ["An error has happened while processing request"],
+            status: ResultStatus.ValidationError);
+}
+
+public class Result<T> : BaseResult where T : class
 {
     public T? Content { get; }
 
@@ -50,5 +70,6 @@ public class Result<T> : Result where T : class
 public enum ResultStatus
 {
     Success,
-    ValidationError
+    ValidationError,
+    InternalServerError
 }
