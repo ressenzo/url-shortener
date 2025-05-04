@@ -30,7 +30,7 @@ internal sealed class ShortenUrlUseCase(
             return Result<ShortenUrlResponse>.ValidationError(url.Errors);
         }
 
-        await urlRepository.CreateUrl(url);
+        await urlRepository.CreateUrl(url, cancellationToken);
         var shortenedUrl = urlService.GetUrl(
             server,
             url.Id);

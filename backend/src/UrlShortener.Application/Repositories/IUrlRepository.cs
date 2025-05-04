@@ -4,5 +4,7 @@ namespace UrlShortener.Application.Repositories;
 
 public interface IUrlRepository
 {
-    public Task<Url> CreateUrl(Url url);
+    public Task<Url> CreateUrl(
+        Url url,
+        CancellationToken cancellationToken);
 }

@@ -10,9 +10,11 @@ public class Url : Entity
 
     private Url(string originalUrl)
             : base(id: null) =>
-        OriginalUrl = originalUrl;
+        (OriginalUrl, CreatedAt) = (originalUrl, DateTime.UtcNow);
 
     public string OriginalUrl { get; }
+
+    public DateTime CreatedAt { get; }
 
     public static Url Factory(
         string id,

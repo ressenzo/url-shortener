@@ -14,4 +14,12 @@ internal class UrlMapper
         Url.Factory(
             Id,
             OriginalUrl);
+
+    public static UrlMapper FromEntity(Url url) =>
+        new()
+        {
+            CreatedAt = url.CreatedAt,
+            Id = url.Id,
+            OriginalUrl = url.OriginalUrl
+        };
 }

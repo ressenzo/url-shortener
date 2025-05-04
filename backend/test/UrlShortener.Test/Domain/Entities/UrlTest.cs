@@ -51,6 +51,7 @@ public class UrlTest
         
         // Assert
         isValid.ShouldBeTrue();
+        url.CreatedAt.ShouldNotBe(DateTime.MinValue);
         url.Errors.ShouldBeEmpty();
     }
 }
