@@ -18,5 +18,5 @@ Because of that, your ```appsettings.json``` must have the following block code:
 ```
 "ConnectionStrings": {
     "Mongo": "mongodb://admin:admin123@localhost:27017"
-  }
+}
 ```
