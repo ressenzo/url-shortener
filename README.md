@@ -17,6 +17,6 @@ docker exec -it mongodb mongosh -u admin -p admin123
 Because of that, your ```appsettings.json``` must have the following block code:
 ```
 "ConnectionStrings": {
-    "Mongo": "mongodb://admin:admin123@localhost:27017"
+    "Mongo": "mongodb://admin:admin123@localhost:27017?directConnection=true&serverSelectionTimeoutMS=2000"
 }
 ```
