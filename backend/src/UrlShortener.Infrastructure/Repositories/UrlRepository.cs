@@ -22,4 +22,9 @@ internal sealed class UrlRepository(
             cancellationToken);
         return url;
     }
+
+    public Task<Url> GetUrl(string id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

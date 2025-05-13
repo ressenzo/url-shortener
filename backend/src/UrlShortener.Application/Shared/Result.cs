@@ -65,11 +65,26 @@ public class Result<T> : BaseResult where T : class
             isSuccess: false,
             errors,
             ResultStatus.ValidationError);
+
+    public static Result<T> ValidationError(string error) =>
+        new(
+            content: null,
+            isSuccess: false,
+            [error],
+            ResultStatus.ValidationError);
+
+    public static Result<T> NotFound(string error) =>
+        new(
+            content: null,
+            isSuccess: false,
+            [error],
+            ResultStatus.NotFound);
 }
 
 public enum ResultStatus
 {
     Success,
     ValidationError,
-    InternalServerError
+    InternalServerError,
+    NotFound
 }
