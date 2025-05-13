@@ -23,8 +23,13 @@ internal sealed class UrlRepository(
         return url;
     }
 
-    public Task<Url> GetUrl(string id, CancellationToken cancellationToken)
+    public async Task<Url?> GetUrl(
+        string id,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var urlMapper = await _urlCollection
+            .Find(x => x.Id.Equals(id))
+            .FirstOrDefaultAsync(cancellationToken);
+        return urlMapper?.ToEntity();
     }
 }
