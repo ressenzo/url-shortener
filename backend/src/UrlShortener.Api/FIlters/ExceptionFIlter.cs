@@ -15,7 +15,7 @@ public class ExceptionFilter(
             var exception = context.Exception;
             logger.LogError(
                 exception,
-                "{Message}",
+                message: "The following error occurred: {Message}",
                 exception.Message);
         }
 
