@@ -7,6 +7,7 @@ const TITLE: string = "Url Shortener";
 const App = () => {
 
     const [shortenedUrl, setShortenedUrl] = useState<string>('');
+    const [isLoading, setIsloading] = useState<boolean>(false);
 
     return (
         <main className="app p-4 vh-100 d-flex w-100 h-100 mx-auto flex-column">
@@ -18,9 +19,11 @@ const App = () => {
             </div>
             <Input
                 setShortenedUrl={setShortenedUrl}
+                setIsLoading={setIsloading}
             />
             <Result
                 shortenedUrl={shortenedUrl!}
+                isLoading={isLoading}
             />
         </main>
     );

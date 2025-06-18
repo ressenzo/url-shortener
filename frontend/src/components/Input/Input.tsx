@@ -1,30 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './Input.css';
+import useFetch from "../../hooks/useFetch";
+import {
+    GetShortenUrlRequest,
+    GetShortenUrlResponse,
+    sendRequestData } from "../../models/shortenUrlModels";
 
 interface InputProps {
     setShortenedUrl: React.Dispatch<React.SetStateAction<string>>;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const URL_REGEX: RegExp = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
 
-const Input = ({ setShortenedUrl }: InputProps) => {
+const Input = ({ setShortenedUrl, setIsLoading }: InputProps) => {
     const [originalUrl, setOriginalUrl] = useState<string>('');
     const [error, setError] = useState<string>('');
+    
+    const { execute, loading, fetchError, data } = useFetch<GetShortenUrlRequest, GetShortenUrlResponse>(sendRequestData);
+
+    useEffect(() => {
+        if (fetchError !== null)
+            setError('An error has happened. Try again!');
+    }, [fetchError])
+
+    useEffect(() => {
+        setIsLoading(loading);
+    }, [loading, setIsLoading])
+
+    useEffect(() => {
+        if (data !== null)
+            setShortenedUrl(data.shortenedUrl);
+    }, [data, setShortenedUrl])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setError('');
-        setShortenedUrl('');
-        setOriginalUrl(e.target.value)
+        setInitialState();
+        setOriginalUrl(e.target.value);
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setInitialState();
         if (!URL_REGEX.test(originalUrl)) {
             setError("Please, input a valid URL");
+            setIsLoading(false);
             return;
         }
-        // TODO: change it to set api result
-        setShortenedUrl(originalUrl);
+        try {
+            const request: GetShortenUrlRequest = {
+                originalUrl
+            };
+            await execute(request);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const setInitialState = () => {
+        setError('');
+        setShortenedUrl('');
     }
 
     return (
