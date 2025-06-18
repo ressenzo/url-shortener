@@ -10,12 +10,11 @@ using UrlShortener.Application.UseCases.ShortenUrl;
 namespace UrlShortener.Api.Controllers;
 
 [ApiController]
-[Route("api/urls")]
 public class UrlController(
     IShortenUrlUseCase shortenUrlUseCase,
     IGetUrlUseCase getUrlUseCase) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("api/urls")]
     [SwaggerResponse(statusCode: (int)HttpStatusCode.Created, type: typeof(ShortenUrlResponse))]
     [SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(BaseResult))]
     [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Result))]
