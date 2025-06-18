@@ -3,13 +3,23 @@ using UrlShortener.Application;
 using UrlShortener.Domain;
 using UrlShortener.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
+const string _CORS_NAME = "All";
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(x =>
 {
     x.Filters.Add(typeof(ExceptionFilter));
+});
+builder.Services.AddCors(x =>
+{
+    x.AddPolicy(_CORS_NAME,
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(_CORS_NAME);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
