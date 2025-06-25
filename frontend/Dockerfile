@@ -1,9 +1,10 @@
 # Stage 1: Build the React app
-FROM node:18 AS build
+FROM node:alpine AS build
 WORKDIR /app
 
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
+# RUN echo "REACT_APP_API_URL=$REACT_APP_API_URL" > .env
 
 # Copy package.json and package-lock.json first (to leverage cache)
 COPY package*.json ./
