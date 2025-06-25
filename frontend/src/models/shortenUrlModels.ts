@@ -11,8 +11,9 @@ export interface GetShortenUrlResponse {
 export const sendRequestData = async(
     request: GetShortenUrlRequest
 ): Promise<GetShortenUrlResponse> => {
+    const baseAddress = process.env.REACT_APP_API_URL;
     const response = await axios.post<GetShortenUrlResponse>(
-        'http://localhost:5147/api/urls',
+        `${baseAddress}/api/urls`,
         request
     );
 
