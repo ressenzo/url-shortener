@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import './Result.css';
+import { Tooltip } from 'bootstrap';
 
 interface ResultProps {
     shortenedUrl: string;
@@ -6,9 +8,35 @@ interface ResultProps {
 }
 
 const Result = ({ shortenedUrl = '', isLoading }: ResultProps) => {
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const tooltipRef = useRef<Tooltip | null>(null);
 
     const handleCopy = async () => {
+        if (!buttonRef.current) return;
+        
+        buttonRef.current.disabled = true;
+        tooltipRef.current?.dispose();
+
+        tooltipRef.current = new Tooltip(buttonRef.current!, {
+            title: "Copied",
+            placement: "top",
+            trigger: "manual"
+        });
+
+        tooltipRef.current.show()
+
         await navigator.clipboard.writeText(shortenedUrl);
+
+        setTimeout(() => {
+            if (tooltipRef.current) {
+                tooltipRef.current.hide();
+                tooltipRef.current = null;
+            }
+
+            if (buttonRef.current) {
+                buttonRef.current.disabled = false;
+            }
+        }, 800)
     }
 
     return (
@@ -33,7 +61,10 @@ const Result = ({ shortenedUrl = '', isLoading }: ResultProps) => {
                         aria-label="readonly input example"
                         readOnly={true}
                     />
-                    <button className="btn btn-info" onClick={handleCopy}>
+                    <button
+                        className="btn btn-info"
+                        onClick={handleCopy}
+                        ref={buttonRef}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
