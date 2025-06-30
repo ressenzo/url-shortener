@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState,
+    useRef } from "react";
 import './Input.css';
 import useFetch from "../../hooks/useFetch";
 import {
     GetShortenUrlRequest,
     GetShortenUrlResponse,
-    sendRequestData } from "../../models/shortenUrlModels";
+    sendRequestData
+} from "../../models/shortenUrlModels";
 
 interface InputProps {
     setShortenedUrl: React.Dispatch<React.SetStateAction<string>>;
@@ -16,7 +20,8 @@ const URL_REGEX: RegExp = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]
 const Input = ({ setShortenedUrl, setIsLoading }: InputProps) => {
     const [originalUrl, setOriginalUrl] = useState<string>('');
     const [error, setError] = useState<string>('');
-    
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const { execute, loading, fetchError, data } = useFetch<GetShortenUrlRequest, GetShortenUrlResponse>(sendRequestData);
 
     useEffect(() => {
@@ -64,7 +69,7 @@ const Input = ({ setShortenedUrl, setIsLoading }: InputProps) => {
     return (
         <div className="input">
             <form onSubmit={e => handleSubmit(e)}>
-                <div className="input-group">
+                <div className="input-group position-relative">
                     <input
                         className="form-control"
                         type="text"
@@ -72,7 +77,17 @@ const Input = ({ setShortenedUrl, setIsLoading }: InputProps) => {
                         onChange={handleChange}
                         id="url-value"
                         autoComplete="off"
+                        value={originalUrl}
+                        ref={inputRef}
                     />
+                    <button
+                        type="button"
+                        className="btn btn-clear btn-sm position-absolute top-50 translate-middle-y"
+                        style={{ zIndex: 100 }}
+                        onClick={() => { setOriginalUrl(''); setInitialState(); inputRef.current?.focus(); }}
+                    >
+                        Clear
+                    </button>
                     <button
                         className="btn btn-info"
                         disabled={originalUrl === ""}

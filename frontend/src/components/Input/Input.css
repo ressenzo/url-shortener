@@ -2,9 +2,20 @@ input.form-control {
     padding: .6rem .9rem;
     font-size: 1.2rem;
     border: 1px solid #acb0b3;
+    padding-right: 4.4rem !important;
 }
 
 input.form-control:focus {
     box-shadow: none;
     border: 1px solid #0dcaf0;
+}
+
+.btn-clear {
+    right: 100px;
+    z-index: "100";
+    padding: 13px;
+}
+
+.btn.btn-clear:active {
+    border: none !important;
 }
