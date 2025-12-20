@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/UrlShortener.Generator.Api/UrlShortener.Generator.Api.csproj" />
+    <Project Path="src/UrlShortener.Generator.Application/UrlShortener.Generator.Application.csproj" />
+    <Project Path="src/UrlShortener.Generator.Domain/UrlShortener.Generator.Domain.csproj" />
+    <Project Path="src/UrlShortener.Generator.Infrastructure/UrlShortener.Generator.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/UrlShortener.Generator.Test/UrlShortener.Generator.Test.csproj" />
+  </Folder>
+</Solution>

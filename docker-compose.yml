@@ -1,5 +1,5 @@
 services:
-  mongo:
+  url-shortener-mongo:
     image: mongo
     container_name: url-shortener-mongo
     restart: always
@@ -13,11 +13,11 @@ services:
     networks:
       - app-network
 
-  backend:
+  url-shortener-backend-generator:
     build:
-      context: ./backend
+      context: ./backend/generator
       dockerfile: Dockerfile
-    container_name: url-shortener-backend
+    container_name: url-shortener-backend-generator
     restart: always
     ports:
       - "5000:8080"
@@ -25,11 +25,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings:Mongo=mongodb://admin:admin123@mongo:27017?directConnection=true&serverSelectionTimeoutMS=2000
     depends_on:
-      - mongo
+      - url-shortener-mongo
     networks:
       - app-network
 
-  frontend:
+  url-shortener-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -40,7 +40,7 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      - url-shortener-backend-generator
     networks:
       - app-network
 
