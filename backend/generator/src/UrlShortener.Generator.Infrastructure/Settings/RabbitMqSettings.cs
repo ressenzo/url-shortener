@@ -1,9 +1,14 @@
 namespace UrlShortener.Generator.Infrastructure.Settings;
 
-public record RabbitMqSettings(
-	string HostName,
-	int Port,
-	string VirtualHost,
-	string UserName,
-	string Password
-);
+public record RabbitMqSettings
+{
+	public string HostName { get; set; } = default!;
+	
+	public int Port { get; set; }
+	
+	public string VirtualHost { get; set; } = default!;
+	
+	public string UserName { get; set; } = default!;
+	
+	public string Password { get; set; } = default!;
+}

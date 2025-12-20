@@ -36,6 +36,14 @@ internal sealed class UrlRepository(
 			JsonSerializer.Serialize(urlMapper)
 		);
 
+		// await channel.QueueDeclareAsync(
+		// 	queue: "url-shortener.creation",
+		// 	durable: true,
+		// 	exclusive: false,
+		// 	autoDelete: false,
+		// 	arguments: null,
+		// 	cancellationToken: cancellationToken);
+
 		await channel.BasicPublishAsync(
 			exchange: string.Empty,
 			routingKey: "url-shortener.creation",
