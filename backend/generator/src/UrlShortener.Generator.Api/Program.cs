@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(x =>
 {
-	x.Filters.Add(typeof(ExceptionFilter));
+	x.Filters.Add<ExceptionFilter>();
 });
 builder.Services.AddCors(x =>
 {
@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationLayer();
 builder.Services.AddDomainLayer();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -38,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(_CORS_NAME);
 app.UseHttpsRedirection();
+app.MapHealthChecks("/healthz");
 
 app.UseAuthorization();
 
