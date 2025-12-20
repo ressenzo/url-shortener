@@ -1,48 +1,11 @@
-using UrlShortener.Generator.Api.Filters;
-using UrlShortener.Generator.Application;
-using UrlShortener.Generator.Domain;
-using UrlShortener.Generator.Infrastructure;
-
-const string _CORS_NAME = "All";
+using UrlShortener.Generator.Api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers(x =>
-{
-	x.Filters.Add<ExceptionFilter>();
-});
-builder.Services.AddCors(x =>
-{
-	x.AddPolicy(_CORS_NAME,
-		builder =>
-		{
-			builder.AllowAnyOrigin()
-				.AllowAnyMethod()
-				.AllowAnyHeader();
-		});
-});
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddApplicationLayer();
-builder.Services.AddDomainLayer();
-builder.Services.AddInfrastructureLayer(builder.Configuration);
-builder.Services.AddHealthChecks();
+builder.Services.AddConfigurations(
+	builder.Configuration
+);
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
-
-app.UseCors(_CORS_NAME);
-app.UseHttpsRedirection();
-app.MapHealthChecks("/healthz");
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.AddConfigurations();
 
 app.Run();
