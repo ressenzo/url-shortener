@@ -4,22 +4,22 @@ namespace UrlShortener.Infrastructure.Mappers;
 
 internal class UrlMapper
 {
-    public string Id { get; init; } = default!;
-    
-    public string OriginalUrl { get; init; } = default!;
+	public string Id { get; init; } = default!;
 
-    public DateTime CreatedAt { get; init; }
+	public string OriginalUrl { get; init; } = default!;
 
-    public Url ToEntity() =>
-        Url.Factory(
-            Id,
-            OriginalUrl);
+	public DateTime CreatedAt { get; init; }
 
-    public static UrlMapper FromEntity(Url url) =>
-        new()
-        {
-            CreatedAt = url.CreatedAt,
-            Id = url.Id,
-            OriginalUrl = url.OriginalUrl
-        };
+	public Url ToEntity() =>
+		Url.Factory(
+			Id,
+			OriginalUrl);
+
+	public static UrlMapper FromEntity(Url url) =>
+		new()
+		{
+			CreatedAt = url.CreatedAt,
+			Id = url.Id,
+			OriginalUrl = url.OriginalUrl
+		};
 }

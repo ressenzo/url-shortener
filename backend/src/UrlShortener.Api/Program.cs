@@ -9,17 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(x =>
 {
-    x.Filters.Add(typeof(ExceptionFilter));
+	x.Filters.Add(typeof(ExceptionFilter));
 });
 builder.Services.AddCors(x =>
 {
-    x.AddPolicy(_CORS_NAME,
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+	x.AddPolicy(_CORS_NAME,
+		builder =>
+		{
+			builder.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader();
+		});
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,8 +32,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseCors(_CORS_NAME);
