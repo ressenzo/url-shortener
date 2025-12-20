@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using UrlShortener.Generator.Application.Repositories;
+using UrlShortener.Generator.Infrastructure.Factories;
 using UrlShortener.Generator.Infrastructure.Repositories;
 
 namespace UrlShortener.Generator.Infrastructure;
@@ -13,7 +14,8 @@ public static class InfrastructureDependency
 		IConfiguration configuration) =>
 		services
 			.AddDatabase(configuration)
-			.AddTransient<IUrlRepository, UrlRepository>();
+			.AddTransient<IUrlRepository, UrlRepository>()
+			.AddTransient<IPublisherFactory, PublisherFactory>();
 
 	private static IServiceCollection AddDatabase(
 		this IServiceCollection services,

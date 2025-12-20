@@ -4,12 +4,12 @@ public class Url : Entity
 {
 	private Url(
 		string id,
-		string originalUrl)
-			: base(id) =>
+		string originalUrl
+	) : base(id) =>
 		OriginalUrl = originalUrl;
 
 	private Url(string originalUrl)
-			: base(id: null) =>
+		: base(id: null) =>
 		(OriginalUrl, CreatedAt) = (originalUrl, DateTime.UtcNow);
 
 	public string OriginalUrl { get; }
@@ -21,7 +21,8 @@ public class Url : Entity
 		string originalUrl) =>
 		new(
 			id,
-			originalUrl);
+			originalUrl
+		);
 
 	public static Url Factory(
 		string originalUrl) =>

@@ -23,9 +23,10 @@ services:
       - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings:Mongo=mongodb://admin:admin123@mongo:27017?directConnection=true&serverSelectionTimeoutMS=2000
+      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017?directConnection=true&serverSelectionTimeoutMS=2000
     depends_on:
       - url-shortener-mongo
+      - url-shortener-rabbit
     networks:
       - app-network
 
@@ -44,8 +45,24 @@ services:
     networks:
       - app-network
 
+  url-shortener-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: url-shortener-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - app-network
+
 volumes:
   mongo-data:
+  rabbitmq-data:
 
 networks:
   app-network:
