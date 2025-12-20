@@ -16,8 +16,6 @@ RUN dotnet publish -c Release -o /app/out
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-ENV ConnectionStrings:Mongo=mongodb://admin:admin123@localhost:27017?directConnection=true&serverSelectionTimeoutMS=2000
-
 # Copy build artifacts from build stage
 COPY --from=build /app/out ./
 

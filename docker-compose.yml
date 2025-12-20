@@ -23,6 +23,19 @@ services:
       - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - url-shortener-rabbit
+    networks:
+      - app-network
+
+  url-shortener-backend-consolidator:
+    build:
+      context: ./backend/consolidator
+      dockerfile: Dockerfile
+    container_name: url-shortener-backend-consolidator
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017?directConnection=true&serverSelectionTimeoutMS=2000
     depends_on:
       - url-shortener-mongo
