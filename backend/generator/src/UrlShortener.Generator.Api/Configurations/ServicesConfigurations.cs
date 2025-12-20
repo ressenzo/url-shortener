@@ -17,7 +17,7 @@ internal static class ServicesConfigurations
 	{
 		services
 			.AddLayers(configuration)
-			.AddHealthChecks()
+			.AddHealthCheck()
 			.AddSettings(configuration)
 			.AddFilters()
 			.AddCors()
@@ -39,7 +39,7 @@ internal static class ServicesConfigurations
 		return services;
 	}
 
-	private static IServiceCollection AddHealthChecks(
+	private static IServiceCollection AddHealthCheck(
 		this IServiceCollection services
 	)
 	{
