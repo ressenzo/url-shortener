@@ -4,5 +4,8 @@ namespace UrlShortener.Consolidator.Application.Repositories;
 
 public interface IUrlRepository
 {
-	Task SaveUrl(SaveUrlRequest url);
+	Task SaveUrl(
+		SaveUrlRequest url,
+		CancellationToken cancellationToken
+	);
 }
