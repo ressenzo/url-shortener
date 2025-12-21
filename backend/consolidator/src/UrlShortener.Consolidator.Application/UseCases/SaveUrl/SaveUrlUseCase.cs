@@ -15,6 +15,8 @@ internal sealed class SaveUrlUseCase(
 	{
 		try
 		{
+			if (request is null)
+				return false;
 			await urlRepository.SaveUrl(request);
 			return true;
 		}

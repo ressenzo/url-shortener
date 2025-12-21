@@ -8,7 +8,7 @@ public class SaveUrlUseCaseTest
 {
 	private readonly SaveUrlUseCase _useCase;
 	private readonly Mock<IUrlRepository> _urlRepository;
-	private readonly SaveUrlRequest _request;
+	private SaveUrlRequest _request;
 
 	public SaveUrlUseCaseTest()
 	{
@@ -20,6 +20,29 @@ public class SaveUrlUseCaseTest
 			OriginalUrl: "Url",
 			CreatedAt: DateTime.UtcNow.AddMinutes(-1)
 		);
+	}
+
+	[Fact]
+	public async Task SaveUrl_ShouldReturnFalse_WhenRequestIsNull()
+	{
+		// Arrange
+		_request = null!;
+
+		// Act
+		var result = await _useCase.SaveUrl(
+			_request,
+			CancellationToken.None
+		);
+
+		// Assert
+		result.ShouldBeFalse();
+		_urlRepository
+			.Verify(
+				x => x.SaveUrl(
+					It.Is<SaveUrlRequest>(x => x.Equals(_request))
+				),
+				Times.Never
+			);
 	}
 
 	[Fact]
