@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/UrlShortener.Consolidator.Console/UrlShortener.Consolidator.Console.csproj" />
     <Project Path="src/UrlShortener.Consolidator.Infrastructure/UrlShortener.Consolidator.Infrastructure.csproj" />
+    <Project Path="src/UrlShortener.Consolidator.Worker/UrlShortener.Consolidator.Worker.csproj" />
   </Folder>
 </Solution>
