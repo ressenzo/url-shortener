@@ -7,7 +7,7 @@ public class Worker(
 	IMessagingConsumerRepository messagingRepository) : BackgroundService
 {
 	// 3 minutes
-	private const int _DELAY_IN_MILISECONDS = 180000;
+	private const int _DELAY_IN_MINUTES = 3;
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -19,7 +19,10 @@ public class Worker(
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
-            await Task.Delay(_DELAY_IN_MILISECONDS, stoppingToken);
+            await Task.Delay(
+				TimeSpan.FromMinutes(_DELAY_IN_MINUTES).Milliseconds,
+				stoppingToken
+			);
         }
     }
 }
