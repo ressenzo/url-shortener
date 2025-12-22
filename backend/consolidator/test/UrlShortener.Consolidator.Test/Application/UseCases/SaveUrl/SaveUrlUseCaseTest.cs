@@ -39,7 +39,8 @@ public class SaveUrlUseCaseTest
 		_urlRepository
 			.Verify(
 				x => x.SaveUrl(
-					It.Is<SaveUrlRequest>(x => x.Equals(_request))
+					It.Is<SaveUrlRequest>(x => x.Equals(_request)),
+					CancellationToken.None
 				),
 				Times.Never
 			);
@@ -52,7 +53,8 @@ public class SaveUrlUseCaseTest
 		_urlRepository
 			.Setup(
 				x => x.SaveUrl(
-					It.IsAny<SaveUrlRequest>()
+					It.IsAny<SaveUrlRequest>(),
+					CancellationToken.None
 				)
 			)
 			.ThrowsAsync(new Exception("Exception"));
@@ -68,7 +70,8 @@ public class SaveUrlUseCaseTest
 		_urlRepository
 			.Verify(
 				x => x.SaveUrl(
-					It.Is<SaveUrlRequest>(x => x.Equals(_request))
+					It.Is<SaveUrlRequest>(x => x.Equals(_request)),
+					CancellationToken.None
 				),
 				Times.Once
 			);
@@ -88,7 +91,8 @@ public class SaveUrlUseCaseTest
 		_urlRepository
 			.Verify(
 				x => x.SaveUrl(
-					It.Is<SaveUrlRequest>(x => x.Equals(_request))
+					It.Is<SaveUrlRequest>(x => x.Equals(_request)),
+					CancellationToken.None
 				),
 				Times.Once
 			);

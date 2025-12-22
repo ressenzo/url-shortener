@@ -17,7 +17,15 @@ internal sealed class SaveUrlUseCase(
 		{
 			if (request is null)
 				return false;
-			await urlRepository.SaveUrl(request);
+			logger.LogInformation(
+				"Saving url of id {Id}",
+				request.Id
+			);
+			await urlRepository.SaveUrl(request, cancellationToken);
+			logger.LogInformation(
+				"Url of id {Id} saved",
+				request.Id
+			);
 			return true;
 		}
 		catch (Exception ex)
