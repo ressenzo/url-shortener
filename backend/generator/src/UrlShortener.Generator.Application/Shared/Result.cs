@@ -79,6 +79,13 @@ public class Result<T> : BaseResult where T : class
 			isSuccess: false,
 			[error],
 			ResultStatus.NotFound);
+
+	public static Result<T> InternalError() =>
+		new(
+			content: null,
+			isSuccess: false,
+			["An internal error has happened"],
+			ResultStatus.InternalServerError);
 }
 
 public enum ResultStatus

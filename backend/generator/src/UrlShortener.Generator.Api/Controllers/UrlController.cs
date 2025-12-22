@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using UrlShortener.Generator.Api.Extensions;
 using UrlShortener.Generator.Api.Requests;
 using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.GetUrl;
@@ -20,7 +21,8 @@ public class UrlController(
 	[SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Result))]
 	public async Task<IActionResult> ShortenUrl(
 		[FromBody] ShortenUrlRequest request,
-		CancellationToken cancellationToken)
+		CancellationToken cancellationToken
+	)
 	{
 		var scheme = HttpContext.Request.Scheme;
 		var host = HttpContext.Request.Host.Value;
@@ -34,7 +36,7 @@ public class UrlController(
 		{
 			ResultStatus.Success => Created("", result.Content),
 			ResultStatus.ValidationError => BadRequest(result),
-			_ => throw new NotImplementedException()
+			_ => result.ToInternalServerError()
 		};
 	}
 
@@ -45,7 +47,8 @@ public class UrlController(
 	[SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Result))]
 	public async Task<IActionResult> GetUrl(
 		[FromRoute][Required] string id,
-		CancellationToken cancellationToken)
+		CancellationToken cancellationToken
+	)
 	{
 		var result = await getUrlUseCase.GetUrl(
 			id,
@@ -55,7 +58,7 @@ public class UrlController(
 			ResultStatus.Success => Redirect(result.Content!.OriginalUrl),
 			ResultStatus.ValidationError => BadRequest(result),
 			ResultStatus.NotFound => NotFound(result),
-			_ => throw new NotImplementedException()
+			_ => result.ToInternalServerError()
 		};
 	}
 }
