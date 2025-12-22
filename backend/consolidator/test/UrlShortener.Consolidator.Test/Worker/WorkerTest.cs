@@ -25,12 +25,12 @@ public class WorkerTest
         // Arrange
         using var cts = new CancellationTokenSource();
         
-        // Act: Start the worker and immediately cancel to exit the loop quickly
+        // Act
         await _worker.StartAsync(cts.Token);
 		await Task.Delay(50);
 		await _worker.StopAsync(CancellationToken.None);
         
-        // Assert: Verify that Start was called on the repository
+        // Assert
         _messagingRepository.Verify(
 			x => x.Start(It.IsAny<CancellationToken>()),
 			Times.Once
