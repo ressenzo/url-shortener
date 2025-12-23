@@ -1,0 +1,5 @@
+echo "Running Project1 tests..."
+dotnet test backend/consolidator
+
+echo "Running Project2 tests..."
+dotnet test backend/generator

@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+PATTERN="^(feat|fix|docs|style|refactor|test|chore)(\\(.+\\))?: .+"
+
+if ! grep -qE "$PATTERN" "$1"; then
+  echo "❌ Invalid commit message."
+  echo "Expected format:"
+  echo "  feat(scope): message"
+  echo "  fix: message"
+  exit 1
+fi
