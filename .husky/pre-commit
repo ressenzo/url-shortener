@@ -1,6 +1,12 @@
 if git diff --cached --name-only | grep -q '^backend/'; then
 	
-	for dir in backend/*; do
+	# check folders with staged changes
+	CHANGED_DIRS=$(git diff --cached --name-only \
+	| grep '^backend/' \
+	| cut -d/ -f1,2 \
+	| sort -u)
+
+	for dir in $CHANGED_DIRS; do
 		[ -d "$dir" ] || continue
 
 		echo ""
