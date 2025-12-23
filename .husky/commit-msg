@@ -1,12 +1,26 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+COMMIT_MSG_FILE="$1"
+MAX_LENGTH=60
+
+# Read first line (commit subject)
+SUBJECT=$(head -n 1 "$COMMIT_MSG_FILE")
+
+# 1 - Enforce max length
+SUBJECT_LENGTH=$(printf "%s" "$SUBJECT" | wc -c)
+
+if [ "$SUBJECT_LENGTH" -gt "$MAX_LENGTH" ]; then
+	echo ""
+	echo "❌ Invalid commit message."
+	echo "Message cannot be greater than $MAX_LENGTH characters"
+	exit 1
+fi
 
 PATTERN="^(feat|fix|docs|style|refactor|test|chore)(\\(.+\\))?: .+"
 
-if ! grep -qE "$PATTERN" "$1"; then
-  echo "❌ Invalid commit message."
-  echo "Expected format:"
-  echo "  feat(scope): message"
-  echo "  fix: message"
-  exit 1
+if ! grep -qE "$PATTERN" "$COMMIT_MSG_FILE"; then
+	echo ""
+  	echo "❌ Invalid commit message."
+  	echo "Expected format:"
+  	echo "  feat(scope): message"
+  	echo "  fix: message"
+  	exit 1
 fi
