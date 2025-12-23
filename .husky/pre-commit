@@ -1,5 +1,8 @@
-echo "Running Project1 tests..."
-dotnet test backend/consolidator
+if git diff --cached --name-only | grep -q '^backend/'; then
 
-echo "Running Project2 tests..."
-dotnet test backend/generator
+	echo "Running Project1 tests..."
+	dotnet test backend/consolidator || exit 1
+
+	echo "Running Project2 tests..."
+	dotnet test backend/generator || exit 1
+fi
