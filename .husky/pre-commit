@@ -1,10 +1,27 @@
 if git diff --cached --name-only | grep -q '^backend/'; then
 	
-	echo ""
-	echo "Running consolidator tests..."
-	dotnet test backend/consolidator || exit 1
+	for dir in backend/*; do
+		[ -d "$dir" ] || continue
 
-	echo ""
-	echo "Running generator tests..."
-	dotnet test backend/generator || exit 1
+		echo ""
+		echo "📂 Checking $dir"
+
+		# .NET (.slnx)
+		if find "$dir" -maxdepth 1 -name "*.slnx" | grep -q .; then
+			echo "🧪 Running .NET tests in $dir"
+			dotnet test "$dir" || exit 1
+		fi
+
+		# Go
+		if find "$dir" -name "*.go" | grep -q .; then
+			echo "🧪 Running Go tests in $dir"
+			(cd "$dir" && go test ./...) || exit 1
+		fi
+
+		# Python
+		if find "$dir" -name "*.py" | grep -q .; then
+			echo "🧪 Running Python tests in $dir"
+			(cd "$dir" && python -m pytest) || exit 1
+		fi
+	done
 fi
