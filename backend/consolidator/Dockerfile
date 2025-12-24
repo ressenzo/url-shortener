@@ -6,7 +6,7 @@ WORKDIR /app
 COPY ./src ./src
 
 # Restore dependencies
-WORKDIR /app/src/UrlShortener.Consolidator.Console
+WORKDIR /app/src/UrlShortener.Consolidator.Worker
 RUN dotnet restore
 
 # Build the app
@@ -22,4 +22,4 @@ ENV ConnectionStrings:Mongo=mongodb://admin:admin123@localhost:27017?directConne
 COPY --from=build /app/out ./
 
 # Run the app
-ENTRYPOINT ["dotnet", "UrlShortener.Consolidator.Api.dll"]
+ENTRYPOINT ["dotnet", "UrlShortener.Consolidator.Worker.dll"]
