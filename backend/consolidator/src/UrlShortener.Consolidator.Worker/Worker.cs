@@ -20,7 +20,7 @@ public class Worker(
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
             await Task.Delay(
-				TimeSpan.FromMinutes(_DELAY_IN_MINUTES).Milliseconds,
+				TimeSpan.FromMinutes(_DELAY_IN_MINUTES),
 				stoppingToken
 			);
         }
