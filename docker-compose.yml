@@ -20,8 +20,9 @@ services:
     container_name: url-shortener-backend-generator
     restart: always
     ports:
-      - "5000:8080"
+      - "5000:5147"
     environment:
+      - ASPNETCORE_URLS=http://+:5147
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - url-shortener-rabbit
