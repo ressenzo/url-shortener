@@ -46,9 +46,6 @@ internal sealed class MessagingConsumerRepository :
 
 	public async Task Start(CancellationToken cancellationToken)
 	{
-		var a = await _factory.CreateConnectionAsync(
-			cancellationToken
-		);
 		_connection = await _factory.CreateConnectionAsync(
 			cancellationToken
 		);
