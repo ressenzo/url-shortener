@@ -12,6 +12,12 @@ services:
       - mongo-data:/data/db
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   url-shortener-backend-generator:
     build:
@@ -31,7 +37,10 @@ services:
       - RabbitMqSettings__UserName=admin
       - RabbitMqSettings__Password=admin123
     depends_on:
-      - url-shortener-rabbitmq
+      url-shortener-mongo:
+        condition: service_healthy
+      url-shortener-rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -50,8 +59,10 @@ services:
       - RabbitMqSettings__UserName=admin
       - RabbitMqSettings__Password=admin123
     depends_on:
-      - url-shortener-mongo
-      - url-shortener-rabbitmq
+      url-shortener-mongo:
+        condition: service_healthy
+      url-shortener-rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -84,6 +95,12 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
     networks:
       - app-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
 
 volumes:
   mongo-data:
