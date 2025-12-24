@@ -24,6 +24,12 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5147
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
+      - RabbitMqSettings__HostName=url-shortener-rabbitmq
+      - RabbitMqSettings__Port=5672
+      - RabbitMqSettings__VirtualHost=/
+      - RabbitMqSettings__UserName=admin
+      - RabbitMqSettings__Password=admin123
     depends_on:
       - url-shortener-rabbitmq
     networks:
@@ -37,7 +43,12 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017?directConnection=true&serverSelectionTimeoutMS=2000
+      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
+      - RabbitMqSettings__HostName=url-shortener-rabbitmq
+      - RabbitMqSettings__Port=5672
+      - RabbitMqSettings__VirtualHost=/
+      - RabbitMqSettings__UserName=admin
+      - RabbitMqSettings__Password=admin123
     depends_on:
       - url-shortener-mongo
       - url-shortener-rabbitmq
