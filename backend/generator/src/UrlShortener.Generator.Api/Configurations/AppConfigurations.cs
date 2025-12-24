@@ -16,7 +16,7 @@ internal static class AppConfigurations
 			app.UseSwaggerUI();
 		}
 
-		app.UseCors()
+		app.UseCors(_CORS_NAME)
 			.UseHttpsRedirection()
 			.UseAuthorization();
 		app.MapHealthChecks("/healthz");
