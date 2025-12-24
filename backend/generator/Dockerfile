@@ -4,6 +4,8 @@ WORKDIR /app
 
 # Copy everything into the container
 COPY ./src ./src
+COPY Directory.Packages.props .
+COPY Directory.Build.props .
 
 # Restore dependencies
 WORKDIR /app/src/UrlShortener.Generator.Api
