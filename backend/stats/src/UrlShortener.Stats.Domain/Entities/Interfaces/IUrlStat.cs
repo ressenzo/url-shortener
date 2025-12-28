@@ -1,6 +1,6 @@
 namespace UrlShortener.Stats.Domain.Entities.Interfaces;
 
-internal interface IUrlStat
+public interface IUrlStat
 {
 	public string Id { get; }
 
