@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/UrlShortener.Stats.Application/UrlShortener.Stats.Application.csproj" />
+    <Project Path="src/UrlShortener.Stats.Domain/UrlShortener.Stats.Domain.csproj" />
     <Project Path="src/UrlShortener.Stats.Infrastructure/UrlShortener.Stats.Infrastructure.csproj" />
     <Project Path="src/UrlShortener.Stats.Worker/UrlShortener.Stats.Worker.csproj" />
   </Folder>
