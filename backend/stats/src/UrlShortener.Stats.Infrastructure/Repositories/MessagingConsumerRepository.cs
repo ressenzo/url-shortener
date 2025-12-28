@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using UrlShortener.Stats.Application.Repositories;
-using UrlShortener.Stats.Application.UseCases.SaveUrl;
+using UrlShortener.Stats.Application.UseCases.SaveUrlStat;
 using UrlShortener.Stats.Infrastructure.Settings;
 
 namespace UrlShortener.Stats.Infrastructure.Repositories;
@@ -15,7 +15,7 @@ internal sealed class MessagingConsumerRepository :
 	IMessagingConsumerRepository,
 	IAsyncDisposable
 {
-	private const string _QUEUE_NAME = "url-shortener.creation";
+	private const string _QUEUE_NAME = "url-shortener.access";
 
 	private readonly ILogger<MessagingConsumerRepository> _logger;
 	private readonly ConnectionFactory _factory;
@@ -106,12 +106,12 @@ internal sealed class MessagingConsumerRepository :
 			ea.Body.ToArray()
 		);
 		var request = JsonSerializer
-			.Deserialize<SaveUrlRequest>(message);
+			.Deserialize<SaveUrlStatRequest>(message);
 		if (request is null)
 			return false;
 		var scope = _serviceScopeFactory.CreateScope();
 		var saveUrlUseCase = scope.ServiceProvider
-			.GetRequiredService<ISaveUrlUseCase>();
+			.GetRequiredService<ISaveUrlStatUseCase>();
 		return await saveUrlUseCase.SaveUrl(
 			request,
 			cancellationToken

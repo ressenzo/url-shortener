@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UrlShortener.Stats.Domain\UrlShortener.Stats.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
