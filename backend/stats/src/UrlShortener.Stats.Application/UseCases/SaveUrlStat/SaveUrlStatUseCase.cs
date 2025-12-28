@@ -17,6 +17,8 @@ internal sealed class SaveUrlStatUseCase(
 	{
 		try
 		{
+			if (request is null)
+				return false;
 			var urlStat = await urlRepository.GetUrlStat(
 				request.Id,
 				cancellationToken

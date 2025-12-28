@@ -49,7 +49,7 @@ public class SaveUrlUseCaseTest
 		_urlRepository
 			.Verify(
 				x => x.SaveUrlStat(
-					It.Is<IUrlStat>(x => x.Equals(_request)),
+					It.IsAny<IUrlStat>(),
 					CancellationToken.None
 				),
 				Times.Never
