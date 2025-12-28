@@ -44,11 +44,11 @@ services:
     networks:
       - app-network
 
-  url-shortener-backend-consolidator:
+  url-shortener-backend-stats:
     build:
-      context: ./backend/consolidator
+      context: ./backend/stats
       dockerfile: Dockerfile
-    container_name: url-shortener-backend-consolidator
+    container_name: url-shortener-backend-stats
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
