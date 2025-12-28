@@ -26,7 +26,7 @@ public static class InfrastructureDependency
 			.GetConnectionString("Mongo");
 		ArgumentException.ThrowIfNullOrWhiteSpace(mongoConnectionString);
 		var mongoClient = new MongoClient(mongoConnectionString);
-		var database = mongoClient.GetDatabase(name: "url-shortener");
+		var database = mongoClient.GetDatabase(name: "url-shortener-stats");
 		services.AddSingleton(database);
 
 		return services;
