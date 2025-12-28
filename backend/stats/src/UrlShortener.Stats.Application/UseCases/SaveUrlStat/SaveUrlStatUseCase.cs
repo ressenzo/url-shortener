@@ -57,8 +57,8 @@ internal sealed class SaveUrlStatUseCase(
 		var urlStat = new UrlStat(
 			request.Id,
 			request.OriginalUrl,
-			1,
-			DateTime.Now
+			accessesQuantity: 1,
+			lastAccess: request.LastAccessAt
 		);
 		await SaveUrlStat(
 			urlStat,

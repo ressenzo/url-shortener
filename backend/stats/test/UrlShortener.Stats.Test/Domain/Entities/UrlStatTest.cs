@@ -25,7 +25,7 @@ public class UrlStatTest
 		urlStat.Id.ShouldBe(id);
 		urlStat.OriginalUrl.ShouldBe(originalUrl);
 		urlStat.AccessesQuantity.ShouldBe(accessesQuantity);
-		urlStat.LastAccess.ShouldBe(lastAccess);
+		urlStat.LastAccessAt.ShouldBe(lastAccess);
 	}
 
 	[Fact]
@@ -48,6 +48,6 @@ public class UrlStatTest
 
 		// Assert
 		urlStat.AccessesQuantity.ShouldBe(accessesQuantity + 1);
-		urlStat.LastAccess.ShouldBeGreaterThan(lastAccess);
+		urlStat.LastAccessAt.ShouldBeGreaterThan(lastAccess);
 	}
 }

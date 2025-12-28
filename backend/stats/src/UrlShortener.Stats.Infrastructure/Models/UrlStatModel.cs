@@ -16,14 +16,14 @@ public class UrlStatModel(
 
 	public int AccessesQuantity { get; private set; } = accessesQuantity;
 
-	public DateTime LastAccess { get; private set; } = lastAccess;
+	public DateTime LastAccessAt { get; private set; } = lastAccess;
 
 	public static UrlStatModel FromEntity(IUrlStat urlStat) =>
 		new(
 			urlStat.Id,
 			urlStat.OriginalUrl,
 			urlStat.AccessesQuantity,
-			urlStat.LastAccess
+			urlStat.LastAccessAt
 		);
 
 	public IUrlStat ToEntity() =>
@@ -31,6 +31,6 @@ public class UrlStatModel(
 			Id,
 			OriginalUrl,
 			AccessesQuantity,
-			LastAccess
+			LastAccessAt
 		);
 }

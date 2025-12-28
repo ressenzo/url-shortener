@@ -15,11 +15,11 @@ public class UrlStat(
 
 	public int AccessesQuantity { get; private set; } = accessesQuantity;
 
-	public DateTime LastAccess { get; private set; } = lastAccess;
+	public DateTime LastAccessAt { get; private set; } = lastAccess;
 
 	public void AddAccess()
 	{
 		AccessesQuantity += 1;
-		LastAccess = DateTime.Now;
+		LastAccessAt = DateTime.Now;
 	}
 }

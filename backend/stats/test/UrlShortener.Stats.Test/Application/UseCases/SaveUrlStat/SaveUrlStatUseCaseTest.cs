@@ -20,7 +20,7 @@ public class SaveUrlUseCaseTest
 		_request = new(
 			Id: "Id",
 			OriginalUrl: "Url",
-			CreatedAt: DateTime.UtcNow.AddMinutes(-1)
+			LastAccessAt: DateTime.UtcNow.AddMinutes(-1)
 		);
 	}
 

@@ -8,7 +8,7 @@ public interface IUrlStat
 
 	public int AccessesQuantity { get; }
 
-	public DateTime LastAccess { get; }
+	public DateTime LastAccessAt { get; }
 
 	public void AddAccess();
 }
