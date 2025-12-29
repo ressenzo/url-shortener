@@ -19,25 +19,10 @@ internal sealed class SaveUrlStatUseCase(
 		{
 			if (request is null)
 				return false;
-			var urlStat = await urlRepository.GetUrlStat(
-				request.Id,
+			await GetAndSaveUrlStat(
+				request,
 				cancellationToken
 			);
-			if (urlStat is null)
-			{
-				await CreateAndSaveFirstAccess(
-					request,
-					cancellationToken
-				);
-			}
-			else
-			{
-				urlStat.AddAccess();
-				await SaveUrlStat(
-					urlStat,
-					cancellationToken
-				);
-			}
 			return true;
 		}
 		catch (Exception ex)
@@ -48,6 +33,32 @@ internal sealed class SaveUrlStatUseCase(
 				ex.Message
 			);
 			return false;
+		}
+	}
+
+	private async Task GetAndSaveUrlStat(
+		SaveUrlStatRequest request,
+		CancellationToken cancellationToken
+	)
+	{
+		var urlStat = await urlRepository.GetUrlStat(
+			request.Id,
+			cancellationToken
+		);
+		if (urlStat is null)
+		{
+			await CreateAndSaveFirstAccess(
+				request,
+				cancellationToken
+			);
+		}
+		else
+		{
+			urlStat.AddAccess();
+			await SaveUrlStat(
+				urlStat,
+				cancellationToken
+			);
 		}
 	}
 
