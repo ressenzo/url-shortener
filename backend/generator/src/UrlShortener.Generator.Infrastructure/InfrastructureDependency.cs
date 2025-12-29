@@ -15,6 +15,7 @@ public static class InfrastructureDependency
 		services
 			.AddDatabase(configuration)
 			.AddTransient<IUrlRepository, UrlRepository>()
+			.AddTransient<IUrlStatRepository, UrlStatRepository>()
 			.AddTransient<IPublisherFactory, PublisherFactory>();
 
 	private static IServiceCollection AddDatabase(
