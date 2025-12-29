@@ -1,57 +1,28 @@
-using System.Text;
-using System.Text.Json;
 using MongoDB.Driver;
-using RabbitMQ.Client;
 using UrlShortener.Generator.Application.Repositories;
 using UrlShortener.Generator.Domain.Entities;
-using UrlShortener.Generator.Infrastructure.Factories;
 using UrlShortener.Generator.Infrastructure.Mappers;
 
 namespace UrlShortener.Generator.Infrastructure.Repositories;
 
 internal sealed class UrlRepository(
-	IMongoDatabase mongoDatabase,
-	IPublisherFactory rabbitMqFactory
+	IMongoDatabase mongoDatabase
 ) : IUrlRepository
 {
 	private readonly IMongoCollection<UrlMapper> _urlCollection =
 		mongoDatabase.GetCollection<UrlMapper>(name: "urls");
 
-	public async Task CreateUrl(
+	public async Task<Url> CreateUrl(
 		Url url,
 		CancellationToken cancellationToken)
 	{
-		await using var connection = await rabbitMqFactory.CreateConnection(
+		var urlMapper = UrlMapper.FromEntity(url);
+		await _urlCollection.InsertOneAsync(
+			urlMapper,
+			options: null,
 			cancellationToken
 		);
-		await using var channel = await rabbitMqFactory.CreateChannel(
-			connection,
-			cancellationToken
-		);
-
-		var urlMapper = UrlMapper.FromEntity(
-			url
-		);
-		var body = Encoding.UTF8.GetBytes(
-			JsonSerializer.Serialize(urlMapper)
-		);
-
-		// await channel.QueueDeclareAsync(
-		// 	queue: "url-shortener.creation",
-		// 	durable: true,
-		// 	exclusive: false,
-		// 	autoDelete: false,
-		// 	arguments: null,
-		// 	cancellationToken: cancellationToken);
-
-		await channel.BasicPublishAsync(
-			exchange: string.Empty,
-			routingKey: "url-shortener.creation",
-			body: body,
-			mandatory: true,
-			basicProperties: new BasicProperties(),
-			cancellationToken: cancellationToken
-		);
+		return url;
 	}
 
 	public async Task<Url?> GetUrl(
