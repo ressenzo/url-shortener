@@ -31,10 +31,20 @@ internal sealed class UrlRepository(
 		CancellationToken cancellationToken
 	)
 	{
-		var model = UrlStatModel.FromEntity(urlStat);
-		await _urlCollection.InsertOneAsync(
-			model,
-			options: null,
+		var filter = Builders<UrlStatModel>.Filter.Eq(
+			x => x.Id,
+			urlStat.Id
+		);
+		var update = Builders<UrlStatModel>.Update.Combine(
+			Builders<UrlStatModel>.Update.Set(x => x.AccessesQuantity, urlStat.AccessesQuantity),
+			Builders<UrlStatModel>.Update.Set(x => x.LastAccessAt, urlStat.LastAccessAt)
+		);
+		var options = new UpdateOptions() { IsUpsert = true };
+
+		await _urlCollection.UpdateOneAsync(
+			filter,
+			update,
+			options,
 			cancellationToken
 		);
 	}
