@@ -6,7 +6,8 @@ namespace UrlShortener.Generator.Application.UseCases.GetUrl;
 
 internal sealed class GetUrlUseCase(
 	ILogger<GetUrlUseCase> logger,
-	IUrlRepository urlRepository) : IGetUrlUseCase
+	IUrlRepository urlRepository,
+	IUrlStatRepository urlStatRepository) : IGetUrlUseCase
 {
 	public async Task<Result<GetUrlResponse>> GetUrl(
 		string id,
@@ -27,6 +28,11 @@ internal sealed class GetUrlUseCase(
 			return Result<GetUrlResponse>.NotFound("Not found Url for the given id");
 		}
 
+		await urlStatRepository.NotifyAccess(
+			url,
+			lastAccessAt: DateTime.Now,
+			cancellationToken
+		);
 		var response = new GetUrlResponse(url.OriginalUrl);
 		return Result<GetUrlResponse>.Success(response);
 	}

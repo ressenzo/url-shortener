@@ -1,7 +1,8 @@
-using Microsoft.Extensions.Logging;
+using Moq.AutoMock;
 using UrlShortener.Generator.Application.Repositories;
 using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.GetUrl;
+using UrlShortener.Generator.Domain.Entities;
 using UrlShortener.Generator.Test.Shared;
 
 namespace UrlShortener.Generator.Test.Application.UseCases.GetUrl;
@@ -9,16 +10,15 @@ namespace UrlShortener.Generator.Test.Application.UseCases.GetUrl;
 public class GetUrlUseCaseTest
 {
 	private readonly GetUrlUseCase _useCase;
-	private readonly Mock<ILogger<GetUrlUseCase>> _logger;
 	private readonly Mock<IUrlRepository> _urlRepository;
+	private readonly Mock<IUrlStatRepository> _urlStatRepository;
 
 	public GetUrlUseCaseTest()
 	{
-		_logger = new();
-		_urlRepository = new();
-		_useCase = new(
-			_logger.Object,
-			_urlRepository.Object);
+		var autoMock = new AutoMocker();
+		_useCase = autoMock.CreateInstance<GetUrlUseCase>();
+		_urlRepository = autoMock.GetMock<IUrlRepository>();
+		_urlStatRepository = autoMock.GetMock<IUrlStatRepository>();
 	}
 
 	[Theory]
@@ -71,5 +71,14 @@ public class GetUrlUseCaseTest
 		// Assert
 		result.Status.ShouldBe(ResultStatus.Success);
 		result.Content!.OriginalUrl.ShouldBe(url.OriginalUrl);
+		_urlStatRepository
+			.Verify(
+				x => x.NotifyAccess(
+					It.Is<Url>(x => x.Equals(url)),
+					It.IsAny<DateTime>(),
+					It.IsAny<CancellationToken>()
+				),
+				Times.Once
+			);
 	}
 }
