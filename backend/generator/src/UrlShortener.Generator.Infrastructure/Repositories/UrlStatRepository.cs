@@ -36,7 +36,7 @@ internal class UrlStatRepository(
 
 		await channel.BasicPublishAsync(
 			exchange: string.Empty,
-			routingKey: "url-shortener.stats",
+			routingKey: "url-shortener.access",
 			body: body,
 			mandatory: true,
 			basicProperties: new BasicProperties(),
