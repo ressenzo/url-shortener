@@ -19,12 +19,8 @@ internal sealed class UrlRepository(
 		CancellationToken cancellationToken
 	)
 	{
-		var filter = Builders<UrlStatModel>.Filter.Eq(
-			x => x.Id, id
-		);
-
 		var stat = await _urlCollection
-			.Find(filter)
+			.Find(x => x.Id.Equals(id))
 			.FirstOrDefaultAsync(cancellationToken);
 
 		return stat?.ToEntity();
