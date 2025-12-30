@@ -11,6 +11,10 @@ services:
       - mongo-data:/data/db
     networks:
       - app-network
+    profiles:
+      - generator
+      - stats
+      - full
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -41,6 +45,10 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    profiles:
+      - generator
+      - frontend
+      - full
 
   url-shortener-backend-stats:
     build:
@@ -62,6 +70,10 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    profiles:
+      - generator
+      - stats
+      - full
 
   url-shortener-frontend:
     build:
@@ -76,6 +88,9 @@ services:
       - url-shortener-backend-generator
     networks:
       - app-network
+    profiles:
+      - frontend
+      - full
 
   url-shortener-rabbitmq:
     image: rabbitmq:3-management
@@ -90,6 +105,10 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
     networks:
       - app-network
+    profiles:
+      - generator
+      - stats
+      - full
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
