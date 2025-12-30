@@ -22,8 +22,7 @@ internal sealed class ShortenUrlUseCase(
 			return Result<ShortenUrlResponse>.ValidationError(
 				errors: ["Host was not provided"]);
 		}
-		var url = Url.Factory(
-			originalUrl);
+		var url = new Url(originalUrl);
 		if (!url.IsValid())
 		{
 			logger.LogInformation("Url is not valid");

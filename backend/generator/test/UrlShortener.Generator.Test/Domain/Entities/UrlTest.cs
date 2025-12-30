@@ -12,7 +12,7 @@ public class UrlTest
 		string? originalUrl)
 	{
 		// Arrange
-		var url = Url.Factory(originalUrl!);
+		var url = new Url(originalUrl!);
 
 		// Act
 		var isValid = url.IsValid();
@@ -27,8 +27,9 @@ public class UrlTest
 	public void IsValid_ShouldReturnFalse_WhenOriginalUrlIsInvalid()
 	{
 		// Arrange
-		var url = Url.Factory(
-			originalUrl: "not a url");
+		var url = new Url(
+			originalUrl: "not a url"
+		);
 
 		// Act
 		var isValid = url.IsValid();
@@ -43,8 +44,9 @@ public class UrlTest
 	public void IsValid_ShouldReturnTrue_WhenOriginalUrlIsValid()
 	{
 		// Arrange
-		var url = Url.Factory(
-			originalUrl: "google.com");
+		var url = new Url(
+			originalUrl: "google.com"
+		);
 
 		// Act
 		var isValid = url.IsValid();

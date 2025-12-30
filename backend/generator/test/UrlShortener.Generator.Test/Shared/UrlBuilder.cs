@@ -5,7 +5,8 @@ namespace UrlShortener.Generator.Test.Shared;
 internal class UrlBuilder : BaseBuilder<Url>
 {
 	public override Url Build() =>
-		Url.Factory(
+		new(
 			id: "12345",
-			originalUrl: "http://random.com");
+			originalUrl: "http://random.com"
+		);
 }

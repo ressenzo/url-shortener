@@ -11,9 +11,7 @@ internal class UrlMapper
 	public DateTime CreatedAt { get; init; }
 
 	public Url ToEntity() =>
-		Url.Factory(
-			Id,
-			OriginalUrl);
+		new(Id, OriginalUrl);
 
 	public static UrlMapper FromEntity(Url url) =>
 		new()

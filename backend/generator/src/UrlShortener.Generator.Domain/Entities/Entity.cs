@@ -10,6 +10,6 @@ public abstract class Entity(string? id)
 
 	public abstract bool IsValid();
 
-	protected void AddErrors(IList<string> errors) =>
-		_errors.AddRange(errors);
+	protected void AddError(string error) =>
+		_errors.Add(error);
 }
