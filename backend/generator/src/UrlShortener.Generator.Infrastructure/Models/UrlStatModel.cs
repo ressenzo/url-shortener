@@ -1,8 +1,8 @@
 using UrlShortener.Generator.Domain.Entities;
 
-namespace UrlShortener.Generator.Infrastructure.Mappers;
+namespace UrlShortener.Generator.Infrastructure.Models;
 
-internal class UrlStatMapper(
+internal class UrlStatModel(
 	string id,
 	string originalUrl,
 	DateTime lastAccessAt
@@ -14,7 +14,7 @@ internal class UrlStatMapper(
 
 	public DateTime LastAccessAt { get; private set; } = lastAccessAt;
 
-	public static UrlStatMapper FromEntity(Url url, DateTime lastAccessAt) =>
+	public static UrlStatModel FromEntity(Url url, DateTime lastAccessAt) =>
 		new(
 			url.Id,
 			url.OriginalUrl,

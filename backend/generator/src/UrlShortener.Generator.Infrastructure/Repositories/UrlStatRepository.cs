@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 using UrlShortener.Generator.Application.Repositories;
 using UrlShortener.Generator.Domain.Entities;
 using UrlShortener.Generator.Infrastructure.Factories;
-using UrlShortener.Generator.Infrastructure.Mappers;
+using UrlShortener.Generator.Infrastructure.Models;
 
 namespace UrlShortener.Generator.Infrastructure.Repositories;
 
@@ -26,12 +26,12 @@ internal class UrlStatRepository(
 			cancellationToken
 		);
 
-		var urlMapper = UrlStatMapper.FromEntity(
+		var urlStatModel = UrlStatModel.FromEntity(
 			url,
 			lastAccessAt
 		);
 		var body = Encoding.UTF8.GetBytes(
-			JsonSerializer.Serialize(urlMapper)
+			JsonSerializer.Serialize(urlStatModel)
 		);
 
 		await channel.BasicPublishAsync(

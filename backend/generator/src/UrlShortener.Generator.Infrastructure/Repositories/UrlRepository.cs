@@ -1,7 +1,7 @@
 using MongoDB.Driver;
 using UrlShortener.Generator.Application.Repositories;
 using UrlShortener.Generator.Domain.Entities;
-using UrlShortener.Generator.Infrastructure.Mappers;
+using UrlShortener.Generator.Infrastructure.Models;
 
 namespace UrlShortener.Generator.Infrastructure.Repositories;
 
@@ -9,16 +9,16 @@ internal sealed class UrlRepository(
 	IMongoDatabase mongoDatabase
 ) : IUrlRepository
 {
-	private readonly IMongoCollection<UrlMapper> _urlCollection =
-		mongoDatabase.GetCollection<UrlMapper>(name: "urls");
+	private readonly IMongoCollection<UrlModel> _urlCollection =
+		mongoDatabase.GetCollection<UrlModel>(name: "urls");
 
 	public async Task<Url> CreateUrl(
 		Url url,
 		CancellationToken cancellationToken)
 	{
-		var urlMapper = UrlMapper.FromEntity(url);
+		var urlModel = UrlModel.FromEntity(url);
 		await _urlCollection.InsertOneAsync(
-			urlMapper,
+			urlModel,
 			options: null,
 			cancellationToken
 		);
@@ -29,9 +29,9 @@ internal sealed class UrlRepository(
 		string id,
 		CancellationToken cancellationToken)
 	{
-		var urlMapper = await _urlCollection
+		var urlModel = await _urlCollection
 			.Find(x => x.Id.Equals(id))
 			.FirstOrDefaultAsync(cancellationToken);
-		return urlMapper?.ToEntity();
+		return urlModel?.ToEntity();
 	}
 }
