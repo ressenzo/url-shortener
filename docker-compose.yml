@@ -31,7 +31,7 @@ services:
       - "5000:5147"
     environment:
       - ASPNETCORE_URLS=http://+:5147
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
       - RabbitMqSettings__HostName=url-shortener-rabbitmq
       - RabbitMqSettings__Port=5672
@@ -56,7 +56,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
       - RabbitMqSettings__HostName=url-shortener-rabbitmq
       - RabbitMqSettings__Port=5672
