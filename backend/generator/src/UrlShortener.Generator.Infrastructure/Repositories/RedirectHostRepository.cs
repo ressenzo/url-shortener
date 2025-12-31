@@ -9,12 +9,15 @@ internal sealed class RedirectHostRepository(
 ) : IRedirectHostRepository
 {
 	private readonly IMongoCollection<HostModel> _urlCollection =
-		mongoDatabase.GetCollection<HostModel>(name: "redirect-host");
+		mongoDatabase.GetCollection<HostModel>(name: "redirectHost");
 
 	public async Task<string?> GetHost(CancellationToken cancellationToken)
 	{
 		var hostModel = await _urlCollection
 			.Find(FilterDefinition<HostModel>.Empty)
+			.Project(x => new HostModel(
+				x.Value
+			))
 			.FirstOrDefaultAsync(cancellationToken);
 
 		return hostModel?.Value;
