@@ -9,15 +9,25 @@ internal static class RedirectEndpoint
 	)
 	{
 		return app
-			.MapGet("{id}", HandleRedirection)
-			.WithName("Redirect");
+			.MapGet("{id}", HandleRedirect)
+			.WithSummary("Route responsible to redirect user according to shortened URL")
+			.Produces(StatusCodes.Status308PermanentRedirect)
+			.Produces(StatusCodes.Status404NotFound)
+			.Produces(StatusCodes.Status500InternalServerError)
+			.WithName("Redirect")
+			.WithTags("Redirect");
 	}
 
-	private static IResult HandleRedirection(
-		[FromRoute] string id
+	private static IResult HandleRedirect(
+		[FromRoute] string id,
+		CancellationToken cancellationToken
 	)
 	{
 		Console.WriteLine(id);
-		return Results.Redirect("http://google.com");
+		return Results.Redirect(
+			"http://google.com",
+			permanent: true,
+			preserveMethod: true
+		);
 	}
 }
