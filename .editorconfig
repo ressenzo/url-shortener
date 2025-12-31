@@ -7,4 +7,8 @@ indent_style = tab
 indent_size = 4
 
 [*.cs]
+max_line_length = 100
 dotnet_diagnostic.IDE0005.severity = error
+dotnet_diagnostic.IDE0055.severity = error
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = false
