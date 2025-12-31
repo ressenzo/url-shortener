@@ -28,8 +28,8 @@ internal static class RedirectEndpoint
 				permanent: true,
 				preserveMethod: true
 			),
-			ResultStatus.NotFound => Results.NotFound(result.Errors),
-			ResultStatus.ValidationError => Results.BadRequest(result.Errors),
+			ResultStatus.NotFound => Results.NotFound(result),
+			ResultStatus.ValidationError => Results.BadRequest(result),
 			_ => result.ToInternalServerError()
 		};
 	}
