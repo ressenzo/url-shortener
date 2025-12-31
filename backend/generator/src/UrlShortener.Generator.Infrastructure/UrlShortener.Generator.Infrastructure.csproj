@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="RabbitMQ.Client" />
+	<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
   </ItemGroup>
 
 </Project>

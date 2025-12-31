@@ -2,7 +2,6 @@ using UrlShortener.Generator.Api.Filters;
 using UrlShortener.Generator.Application;
 using UrlShortener.Generator.Domain;
 using UrlShortener.Generator.Infrastructure;
-using UrlShortener.Generator.Infrastructure.Settings;
 
 namespace UrlShortener.Generator.Api.Configurations;
 
@@ -18,7 +17,6 @@ internal static class ServicesConfigurations
 		services
 			.AddLayers(configuration)
 			.AddHealthCheck()
-			.AddSettings(configuration)
 			.AddFilters()
 			.AddCors()
 			.AddEndpointsApiExplorer()
@@ -44,18 +42,6 @@ internal static class ServicesConfigurations
 	)
 	{
 		services.AddHealthChecks();
-
-		return services;
-	}
-
-	private static IServiceCollection AddSettings(
-		this IServiceCollection services,
-		ConfigurationManager configuration
-	)
-	{
-		services.Configure<RabbitMqSettings>(
-			configuration.GetSection(nameof(RabbitMqSettings))
-		);
 
 		return services;
 	}
