@@ -1,4 +1,5 @@
 using Moq.AutoMock;
+using UrlShortener.Generator.Application.Repositories;
 using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.ShortenUrl;
 using UrlShortener.Generator.Domain.Services.UrlService;
@@ -9,30 +10,14 @@ public class ShortenUrlUseCaseTest
 {
 	private readonly ShortenUrlUseCase _useCase;
 	private readonly Mock<IUrlService> _urlService;
+	private readonly Mock<IRedirectHostRepository> _redirectHostRepository;
 
 	public ShortenUrlUseCaseTest()
 	{
 		var mocker = new AutoMocker();
 		_useCase = mocker.CreateInstance<ShortenUrlUseCase>();
 		_urlService = mocker.GetMock<IUrlService>();
-	}
-
-	[Theory]
-	[InlineData("")]
-	[InlineData(" ")]
-	[InlineData(null!)]
-	public async Task ShortenUrl_ShouldReturnValidationError_WhenHostIsNotValid(
-		string? host)
-	{
-		// Arrange - Act
-		var result = await _useCase.ShortenUrl(
-			host!,
-			It.IsAny<string>(),
-			It.IsAny<CancellationToken>());
-
-		// Assert
-		result.Status.ShouldBe(ResultStatus.ValidationError);
-		result.Errors.First().ShouldBe("Host was not provided");
+		_redirectHostRepository = mocker.GetMock<IRedirectHostRepository>();
 	}
 
 	[Fact]
@@ -43,32 +28,55 @@ public class ShortenUrlUseCaseTest
 
 		// Act
 		var result = await _useCase.ShortenUrl(
-			host: "host",
 			invalidUrl!,
-			It.IsAny<CancellationToken>());
+			It.IsAny<CancellationToken>()
+		);
 
 		// Assert
 		result.Status.ShouldBe(ResultStatus.ValidationError);
 	}
 
-	[Fact]
-	public async Task ShortenUrl_ShouldReturnSuccess_WhenUrlIsValid()
+	[Theory]
+	[InlineData("http://redirect-host.com", "http://redirect-host.com")]
+	[InlineData(null, "http://localhost:5001")]
+	public async Task ShortenUrl_ShouldReturnSuccess_WhenUrlIsValid(
+		string? redirectHost,
+		string expectedHostToBeShortened
+	)
 	{
 		// Arrange
-		string validHost = "http://localhost:5100";
-		string validUrl = "http://google.com";
-		_urlService.Setup(x => x.GetUrl(
-				It.IsAny<string>(),
-				It.IsAny<string>()))
-			.Returns("shortenedUrl");
+		string originalUrl = "http://google.com";
+		string shortenedUrl = "shortenedUrl";
+		_urlService
+			.Setup(
+				x => x.GetUrl(
+					It.IsAny<string>(),
+					It.IsAny<string>()
+				)
+			)
+			.Returns(shortenedUrl);
+		_redirectHostRepository
+			.Setup(
+				x => x.GetHost(It.IsAny<CancellationToken>())
+			)
+			.ReturnsAsync(redirectHost);
 
 		// Act
 		var result = await _useCase.ShortenUrl(
-			validHost,
-			validUrl,
-			It.IsAny<CancellationToken>());
+			originalUrl,
+			It.IsAny<CancellationToken>()
+		);
 
 		// Assert
 		result.Status.ShouldBe(ResultStatus.Success);
+		result.Content!.ShortenedUrl.ShouldBe(shortenedUrl);
+		_urlService
+			.Verify(
+				x => x.GetUrl(
+					expectedHostToBeShortened,
+					It.IsAny<string>()
+				),
+				Times.Once
+			);
 	}
 }

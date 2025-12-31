@@ -9,19 +9,15 @@ namespace UrlShortener.Generator.Application.UseCases.ShortenUrl;
 internal sealed class ShortenUrlUseCase(
 	ILogger<ShortenUrlUseCase> logger,
 	IUrlRepository urlRepository,
-	IUrlService urlService) : IShortenUrlUseCase
+	IRedirectHostRepository redirectHostRepository,
+	IUrlService urlService
+) : IShortenUrlUseCase
 {
 	public async Task<Result<ShortenUrlResponse>> ShortenUrl(
-		string host,
 		string originalUrl,
-		CancellationToken cancellationToken)
+		CancellationToken cancellationToken
+	)
 	{
-		if (string.IsNullOrWhiteSpace(host))
-		{
-			logger.LogInformation("Host was not provided");
-			return Result<ShortenUrlResponse>.ValidationError(
-				errors: ["Host was not provided"]);
-		}
 		var url = new Url(originalUrl);
 		if (!url.IsValid())
 		{
@@ -29,10 +25,15 @@ internal sealed class ShortenUrlUseCase(
 			return Result<ShortenUrlResponse>.ValidationError(url.Errors);
 		}
 
+		var host = await redirectHostRepository.GetHost(
+			cancellationToken
+		) ?? "http://localhost:5001";
+
 		await urlRepository.CreateUrl(url, cancellationToken);
 		var shortenedUrl = urlService.GetUrl(
 			host,
-			url.Id);
+			url.Id
+		);
 		var response = new ShortenUrlResponse()
 		{
 			ShortenedUrl = shortenedUrl

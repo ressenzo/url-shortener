@@ -45,7 +45,6 @@ public class UrlControllerTest
 		_shortenUrlUseCase
 			.Setup(
 				x => x.ShortenUrl(
-					"https://example.com",
 					"https://original.url",
 					It.IsAny<CancellationToken>()
 				)
@@ -75,7 +74,6 @@ public class UrlControllerTest
 		_shortenUrlUseCase
 			.Setup(
 				x => x.ShortenUrl(
-					"https://example.com",
 					"invalid-url",
 					It.IsAny<CancellationToken>()
 				)
@@ -106,7 +104,6 @@ public class UrlControllerTest
 		_shortenUrlUseCase
 			.Setup(
 				x => x.ShortenUrl(
-					"https://example.com",
 					"invalid-url",
 					It.IsAny<CancellationToken>()
 				)

@@ -22,13 +22,10 @@ public class UrlController(
 		CancellationToken cancellationToken
 	)
 	{
-		var scheme = HttpContext.Request.Scheme;
-		var host = HttpContext.Request.Host.Value;
-		var completedHost = $"{scheme}://{host}";
 		var result = await shortenUrlUseCase.ShortenUrl(
-			completedHost,
 			request.OriginalUrl,
-			cancellationToken);
+			cancellationToken
+		);
 
 		return result.Status switch
 		{
