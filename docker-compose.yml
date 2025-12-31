@@ -15,6 +15,7 @@ services:
       - generator
       - stats
       - full
+      - redirector
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -49,6 +50,7 @@ services:
       - generator
       - frontend
       - full
+      - redirector
 
   url-shortener-backend-stats:
     build:
@@ -74,6 +76,7 @@ services:
       - generator
       - stats
       - full
+      - redirector
 
   url-shortener-frontend:
     build:
@@ -109,12 +112,42 @@ services:
       - generator
       - stats
       - full
+      - redirector
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
       timeout: 30s
       retries: 3
       start_period: 60s
+
+  url-shortener-backend-redirector:
+    build:
+      context: ./backend/redirector
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5001:5293"
+    environment:
+      - ASPNETCORE_URLS=http://+:5293
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
+      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
+      - RabbitMqSettings__HostName=url-shortener-rabbitmq
+      - RabbitMqSettings__Port=5672
+      - RabbitMqSettings__VirtualHost=/
+      - RabbitMqSettings__UserName=admin
+      - RabbitMqSettings__Password=admin123
+    depends_on:
+      url-shortener-mongo:
+        condition: service_healthy
+      url-shortener-rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    profiles:
+      - generator
+      - frontend
+      - full
+      - redirector
 
 volumes:
   mongo-data:
