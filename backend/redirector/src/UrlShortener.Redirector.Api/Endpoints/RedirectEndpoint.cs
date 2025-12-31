@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using UrlShortener.Redirector.Application.UseCases.GetUrl;
 
 namespace UrlShortener.Redirector.Api.Endpoints;
 
@@ -6,29 +7,32 @@ internal static class RedirectEndpoint
 {
 	public static RouteHandlerBuilder AddRedirectEndpoint(
 		this WebApplication app
-	)
-	{
-		return app
-			.MapGet("{id}", HandleRedirect)
-			.WithSummary("Route responsible to redirect user according to shortened URL")
-			.Produces(StatusCodes.Status308PermanentRedirect)
-			.Produces(StatusCodes.Status400BadRequest)
-			.Produces(StatusCodes.Status404NotFound)
-			.Produces(StatusCodes.Status500InternalServerError)
-			.WithName("Redirect")
-			.WithTags("Redirect");
-	}
+	) => app.MapGet("{id}", HandleRedirect);
 
-	private static IResult HandleRedirect(
+	private static async Task<IResult> HandleRedirect(
 		[FromRoute] string id,
+		[FromServices] IGetUrlUseCase getUrlUseCase,
 		CancellationToken cancellationToken
 	)
 	{
-		Console.WriteLine(id);
-		return Results.Redirect(
-			"http://google.com",
-			permanent: true,
-			preserveMethod: true
+		var result = await getUrlUseCase.GetUrl(
+			id,
+			cancellationToken
 		);
+		if (result.IsSuccess)
+		{
+			return Results.Redirect(
+				"http://google.com",
+				permanent: true,
+				preserveMethod: true
+			);
+		}
+		else
+		{
+			return Results.NotFound(new
+			{
+				result = "Not Found"
+			});
+		}
 	}
 }
