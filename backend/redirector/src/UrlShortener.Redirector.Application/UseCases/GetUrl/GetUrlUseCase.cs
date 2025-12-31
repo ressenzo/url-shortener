@@ -26,7 +26,7 @@ internal sealed class GetUrlUseCase(
 		if (url is null)
 		{
 			logger.LogInformation(
-				message: "Url for {Id} id was not found",
+				message: "Url for id '{Id}' was not found",
 				args: id
 			);
 			return Result<GetUrlResponse>
@@ -37,6 +37,10 @@ internal sealed class GetUrlUseCase(
 			url,
 			lastAccessAt: DateTime.Now,
 			cancellationToken
+		);
+		logger.LogInformation(
+			message: "Url for id '{Id}' was found",
+			args: id
 		);
 		var response = new GetUrlResponse(url.OriginalUrl);
 		return Result<GetUrlResponse>.Success(response);
