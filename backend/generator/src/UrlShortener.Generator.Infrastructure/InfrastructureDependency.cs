@@ -2,9 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using UrlShortener.Generator.Application.Repositories;
-using UrlShortener.Generator.Infrastructure.Factories;
 using UrlShortener.Generator.Infrastructure.Repositories;
-using UrlShortener.Generator.Infrastructure.Settings;
 
 namespace UrlShortener.Generator.Infrastructure;
 
@@ -15,9 +13,7 @@ public static class InfrastructureDependency
 		IConfiguration configuration) =>
 		services
 			.AddDatabase(configuration)
-			.AddTransient<IUrlRepository, UrlRepository>()
-			.AddTransient<IUrlStatRepository, UrlStatRepository>()
-			.AddTransient<IPublisherFactory, PublisherFactory>();
+			.AddTransient<IUrlRepository, UrlRepository>();
 
 	private static IServiceCollection AddDatabase(
 		this IServiceCollection services,
@@ -29,18 +25,6 @@ public static class InfrastructureDependency
 		var mongoClient = new MongoClient(mongoConnectionString);
 		var database = mongoClient.GetDatabase(name: "url-shortener");
 		services.AddSingleton(database);
-
-		return services;
-	}
-
-	private static IServiceCollection AddSettings(
-		this IServiceCollection services,
-		ConfigurationManager configuration
-	)
-	{
-		services.Configure<RabbitMqSettings>(
-			configuration.GetSection(nameof(RabbitMqSettings))
-		);
 
 		return services;
 	}

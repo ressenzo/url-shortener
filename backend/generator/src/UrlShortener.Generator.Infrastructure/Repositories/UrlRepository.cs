@@ -24,14 +24,4 @@ internal sealed class UrlRepository(
 		);
 		return url;
 	}
-
-	public async Task<Url?> GetUrl(
-		string id,
-		CancellationToken cancellationToken)
-	{
-		var urlModel = await _urlCollection
-			.Find(x => x.Id.Equals(id))
-			.FirstOrDefaultAsync(cancellationToken);
-		return urlModel?.ToEntity();
-	}
 }

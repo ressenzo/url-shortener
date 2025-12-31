@@ -1,19 +1,17 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using UrlShortener.Generator.Api.Extensions;
 using UrlShortener.Generator.Api.Requests;
 using UrlShortener.Generator.Application.Shared;
-using UrlShortener.Generator.Application.UseCases.GetUrl;
 using UrlShortener.Generator.Application.UseCases.ShortenUrl;
 
 namespace UrlShortener.Generator.Api.Controllers;
 
 [ApiController]
 public class UrlController(
-	IShortenUrlUseCase shortenUrlUseCase,
-	IGetUrlUseCase getUrlUseCase) : ControllerBase
+	IShortenUrlUseCase shortenUrlUseCase
+) : ControllerBase
 {
 	[HttpPost("api/urls")]
 	[SwaggerResponse(statusCode: (int)HttpStatusCode.Created, type: typeof(ShortenUrlResponse))]
@@ -36,28 +34,6 @@ public class UrlController(
 		{
 			ResultStatus.Success => Created("", result.Content),
 			ResultStatus.ValidationError => BadRequest(result),
-			_ => result.ToInternalServerError()
-		};
-	}
-
-	[HttpGet("{id}")]
-	[SwaggerResponse(statusCode: (int)HttpStatusCode.OK, type: typeof(ShortenUrlResponse))]
-	[SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(BaseResult))]
-	[SwaggerResponse(statusCode: (int)HttpStatusCode.NotFound, type: typeof(BaseResult))]
-	[SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Result))]
-	public async Task<IActionResult> GetUrl(
-		[FromRoute][Required] string id,
-		CancellationToken cancellationToken
-	)
-	{
-		var result = await getUrlUseCase.GetUrl(
-			id,
-			cancellationToken);
-		return result.Status switch
-		{
-			ResultStatus.Success => Redirect(result.Content!.OriginalUrl),
-			ResultStatus.ValidationError => BadRequest(result),
-			ResultStatus.NotFound => NotFound(result),
 			_ => result.ToInternalServerError()
 		};
 	}

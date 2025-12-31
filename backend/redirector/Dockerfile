@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=build /app/out ./
 
 # Expose port (change to your API port if different)
-EXPOSE 5147
+EXPOSE 5293
 
 # Run the app
 ENTRYPOINT ["dotnet", "UrlShortener.Redirector.Api.dll"]
