@@ -13,7 +13,8 @@ public static class InfrastructureDependency
 		IConfiguration configuration) =>
 		services
 			.AddDatabase(configuration)
-			.AddTransient<IUrlRepository, UrlRepository>();
+			.AddTransient<IUrlRepository, UrlRepository>()
+			.AddTransient<IHostRepository, HostRepository>();
 
 	private static IServiceCollection AddDatabase(
 		this IServiceCollection services,
