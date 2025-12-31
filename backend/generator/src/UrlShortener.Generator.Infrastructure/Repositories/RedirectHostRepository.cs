@@ -4,9 +4,9 @@ using UrlShortener.Generator.Infrastructure.Models;
 
 namespace UrlShortener.Generator.Infrastructure.Repositories;
 
-internal sealed class HostRepository(
+internal sealed class RedirectHostRepository(
 	IMongoDatabase mongoDatabase
-) : IHostRepository
+) : IRedirectHostRepository
 {
 	private readonly IMongoCollection<HostModel> _urlCollection =
 		mongoDatabase.GetCollection<HostModel>(name: "host");

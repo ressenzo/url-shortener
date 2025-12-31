@@ -14,7 +14,7 @@ public static class InfrastructureDependency
 		services
 			.AddDatabase(configuration)
 			.AddTransient<IUrlRepository, UrlRepository>()
-			.AddTransient<IHostRepository, HostRepository>();
+			.AddTransient<IRedirectHostRepository, RedirectHostRepository>();
 
 	private static IServiceCollection AddDatabase(
 		this IServiceCollection services,

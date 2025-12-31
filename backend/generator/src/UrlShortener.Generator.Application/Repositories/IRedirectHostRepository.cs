@@ -1,6 +1,6 @@
 namespace UrlShortener.Generator.Application.Repositories;
 
-public interface IHostRepository
+public interface IRedirectHostRepository
 {
 	Task<string?> GetHost(CancellationToken cancellationToken);
 }
