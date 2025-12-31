@@ -12,6 +12,7 @@ internal static class RedirectEndpoint
 			.MapGet("{id}", HandleRedirect)
 			.WithSummary("Route responsible to redirect user according to shortened URL")
 			.Produces(StatusCodes.Status308PermanentRedirect)
+			.Produces(StatusCodes.Status400BadRequest)
 			.Produces(StatusCodes.Status404NotFound)
 			.Produces(StatusCodes.Status500InternalServerError)
 			.WithName("Redirect")
