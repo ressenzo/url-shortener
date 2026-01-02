@@ -1,11 +1,9 @@
+using UrlShortener.Generator.Api.Commons;
+
 namespace UrlShortener.Generator.Api.Configurations;
 
 internal static class AppConfigurations
 {
-	// TODO: create class to store this value
-	// and dont repeat it
-	private const string _CORS_NAME = "All";
-
 	public static IApplicationBuilder AddConfigurations(
 		this WebApplication app
 	)
@@ -16,7 +14,7 @@ internal static class AppConfigurations
 			app.UseSwaggerUI();
 		}
 
-		app.UseCors(_CORS_NAME)
+		app.UseCors(Constants._CORS_NAME)
 			.UseHttpsRedirection()
 			.UseAuthorization();
 		app.MapHealthChecks("/healthz");

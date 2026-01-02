@@ -1,3 +1,4 @@
+using UrlShortener.Generator.Api.Commons;
 using UrlShortener.Generator.Api.Filters;
 using UrlShortener.Generator.Application;
 using UrlShortener.Generator.Domain;
@@ -7,8 +8,6 @@ namespace UrlShortener.Generator.Api.Configurations;
 
 internal static class ServicesConfigurations
 {
-	private const string _CORS_NAME = "All";
-
 	public static IServiceCollection AddConfigurations(
 		this IServiceCollection services,
 		ConfigurationManager configuration
@@ -65,7 +64,7 @@ internal static class ServicesConfigurations
 		services.AddCors(x =>
 		{
 			x.AddPolicy(
-				_CORS_NAME,
+				Constants._CORS_NAME,
 				builder =>
 				{
 					builder
