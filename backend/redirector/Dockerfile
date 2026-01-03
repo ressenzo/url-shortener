@@ -2,8 +2,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
-ARG NUGET_AUTH_TOKEN
-
 # Copy everything into the container
 COPY ./src ./src
 COPY Directory.Packages.props .
@@ -13,9 +11,10 @@ COPY nuget.config .
 # Restore dependencies
 WORKDIR /app/src/UrlShortener.Redirector.Api
 RUN dotnet nuget list source
-RUN dotnet nuget update source github \
+RUN --mount=type=secret,id=nuget_token,target=/tmp/nuget_token \
+    dotnet nuget update source github \
     --username ressenzo \
-    --password $NUGET_AUTH_TOKEN \
+    --password $(cat /tmp/nuget_token) \
     --store-password-in-clear-text \
  	&& dotnet restore
 

@@ -1,3 +1,7 @@
+secrets:
+  nuget_token:
+    file: ${NUGET_TOKEN_FILE:-./sensitive_data/nuget_token.txt}
+
 services:
   url-shortener-mongo:
     image: mongo
@@ -28,8 +32,8 @@ services:
     build:
       context: ./backend/generator
       dockerfile: Dockerfile
-      args:
-        - NUGET_AUTH_TOKEN=${NUGET_AUTH_TOKEN}
+      secrets:
+        - nuget_token
     restart: always
     ports:
       - "5000:5147"
@@ -59,8 +63,8 @@ services:
     build:
       context: ./backend/stats
       dockerfile: Dockerfile
-      args:
-        - NUGET_AUTH_TOKEN=${NUGET_AUTH_TOKEN}
+      secrets:
+        - nuget_token
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
@@ -129,8 +133,8 @@ services:
     build:
       context: ./backend/redirector
       dockerfile: Dockerfile
-      args:
-        - NUGET_AUTH_TOKEN=${NUGET_AUTH_TOKEN}
+      secrets:
+        - nuget_token
     restart: always
     ports:
       - "5001:5293"
