@@ -10,19 +10,19 @@ public class Worker(
 	private const int _DELAY_IN_MINUTES = 3;
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        await messagingRepository.Start(stoppingToken);
+	{
+		await messagingRepository.Start(stoppingToken);
 
 		while (!stoppingToken.IsCancellationRequested)
-        {
-            if (logger.IsEnabled(LogLevel.Information))
-            {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            }
-            await Task.Delay(
+		{
+			if (logger.IsEnabled(LogLevel.Information))
+			{
+				logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+			}
+			await Task.Delay(
 				TimeSpan.FromMinutes(_DELAY_IN_MINUTES),
 				stoppingToken
 			);
-        }
-    }
+		}
+	}
 }

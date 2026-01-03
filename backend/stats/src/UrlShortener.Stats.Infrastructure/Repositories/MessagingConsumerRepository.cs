@@ -30,7 +30,7 @@ internal sealed class MessagingConsumerRepository :
 	)
 	{
 		_logger = logger;
-		
+
 		var settings = options.Value;
 		_factory = new ConnectionFactory()
 		{
@@ -40,7 +40,7 @@ internal sealed class MessagingConsumerRepository :
 			UserName = settings.UserName,
 			Password = settings.Password
 		};
-		
+
 		_serviceScopeFactory = serviceScopeFactory;
 	}
 
