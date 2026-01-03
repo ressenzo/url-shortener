@@ -1,4 +1,4 @@
-using UrlShortener.Redirector.Application.Shared;
+using ResultPattern;
 
 namespace UrlShortener.Redirector.Application.UseCases.GetUrl;
 

@@ -1,7 +1,7 @@
 using Moq;
+using ResultPattern;
 using UrlShortener.Redirector.Application.Models;
 using UrlShortener.Redirector.Application.Repositories;
-using UrlShortener.Redirector.Application.Shared;
 using UrlShortener.Redirector.Application.UseCases.GetUrl;
 
 namespace UrlShortener.Redirector.Test.Application.UseCases.GetUrl;

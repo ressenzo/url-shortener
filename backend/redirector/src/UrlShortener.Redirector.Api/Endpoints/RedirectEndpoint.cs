@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ResultPattern;
 using UrlShortener.Redirector.Api.Extensions;
-using UrlShortener.Redirector.Application.Shared;
 using UrlShortener.Redirector.Application.UseCases.GetUrl;
 
 namespace UrlShortener.Redirector.Api.Endpoints;
