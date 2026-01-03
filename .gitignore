@@ -1,4 +1,4 @@
 # If using GitHub Codespaces or Visual Studio Code
 .vscode/
 .history/
-.env
+sensitive_data/
