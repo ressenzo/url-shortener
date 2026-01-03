@@ -12,9 +12,15 @@ public class Url : Entity
 		: base(id: null) =>
 		(OriginalUrl, CreatedAt) = (originalUrl, DateTime.UtcNow);
 
-	public string OriginalUrl { get; }
+	public string OriginalUrl
+	{
+		get;
+	}
 
-	public DateTime CreatedAt { get; }
+	public DateTime CreatedAt
+	{
+		get;
+	}
 
 	public override bool IsValid()
 	{
