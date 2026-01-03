@@ -1,9 +1,9 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using ResultPattern;
 using Swashbuckle.AspNetCore.Annotations;
 using UrlShortener.Generator.Api.Extensions;
 using UrlShortener.Generator.Api.Requests;
-using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.ShortenUrl;
 
 namespace UrlShortener.Generator.Api.Controllers;

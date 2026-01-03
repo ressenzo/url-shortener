@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using UrlShortener.Generator.Application.Shared;
+using ResultPattern;
 
 namespace UrlShortener.Generator.Api.Filters;
 
@@ -19,7 +19,7 @@ public class ExceptionFilter(
 				exception.Message);
 		}
 
-		var internalServerErrorResult = Result.InternalServerError();
+		var internalServerErrorResult = Result.InternalError();
 		context.Result = new ObjectResult(internalServerErrorResult)
 		{
 			StatusCode = (int)HttpStatusCode.InternalServerError

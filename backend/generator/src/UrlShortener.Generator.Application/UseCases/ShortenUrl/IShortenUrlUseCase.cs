@@ -1,4 +1,4 @@
-using UrlShortener.Generator.Application.Shared;
+using ResultPattern;
 
 namespace UrlShortener.Generator.Application.UseCases.ShortenUrl;
 

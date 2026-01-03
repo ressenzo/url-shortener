@@ -2,9 +2,9 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq.AutoMock;
+using ResultPattern;
 using UrlShortener.Generator.Api.Controllers;
 using UrlShortener.Generator.Api.Requests;
-using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.ShortenUrl;
 
 namespace UrlShortener.Generator.Test.Api.Controllers;
@@ -70,7 +70,7 @@ public class UrlControllerTest
 			"invalid-url"
 		);
 		var result = Result<ShortenUrlResponse>
-			.ValidationError("Invalid URL");
+			.ValidationError(["Invalid URL"]);
 		_shortenUrlUseCase
 			.Setup(
 				x => x.ShortenUrl(
@@ -100,7 +100,7 @@ public class UrlControllerTest
 			"invalid-url"
 		);
 		var result = Result<ShortenUrlResponse>
-			.NotFound("Not found");
+			.NotFound(["Not found"]);
 		_shortenUrlUseCase
 			.Setup(
 				x => x.ShortenUrl(

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
+using ResultPattern;
 using UrlShortener.Generator.Application.Repositories;
-using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Domain.Entities;
 using UrlShortener.Generator.Domain.Services.UrlService;
 

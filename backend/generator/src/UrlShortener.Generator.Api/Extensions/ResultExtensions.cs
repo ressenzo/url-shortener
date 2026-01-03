@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using UrlShortener.Generator.Application.Shared;
+using ResultPattern;
 
 namespace UrlShortener.Generator.Api.Extensions;
 

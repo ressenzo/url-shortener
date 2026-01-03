@@ -1,6 +1,6 @@
 using Moq.AutoMock;
+using ResultPattern;
 using UrlShortener.Generator.Application.Repositories;
-using UrlShortener.Generator.Application.Shared;
 using UrlShortener.Generator.Application.UseCases.ShortenUrl;
 using UrlShortener.Generator.Domain.Services.UrlService;
 
