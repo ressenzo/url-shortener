@@ -31,6 +31,6 @@ func TestAddAccess(t *testing.T) {
 	}
 
 	if urlStat.LastAccess.Before(lastAccess) || urlStat.LastAccess.Equal(lastAccess) {
-		t.Errorf("expected LastAccesses to be greater than = %s", urlStat.LastAccess)
+		t.Errorf("expected LastAccesses to be after than = %s", urlStat.LastAccess)
 	}
 }
