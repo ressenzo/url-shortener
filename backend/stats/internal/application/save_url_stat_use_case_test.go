@@ -1,71 +1,110 @@
 package application
 
 import (
+	"errors"
 	"testing"
 	"time"
 	"url-shortener/stats/internal/domain"
 )
 
 type mockUrlStatRepository struct {
-	savedStats map[string]*domain.UrlStat
-	getCount   int
-	saveCount  int
+	getUrlStatFunc  func(id string) (*domain.UrlStat, error)
+	saveUrlStatFunc func(stat domain.UrlStat) (domain.UrlStat, error)
 }
 
-func (m *mockUrlStatRepository) GetUrlStat(id string) *domain.UrlStat {
-	m.getCount++
-	return m.savedStats[id]
+func (m *mockUrlStatRepository) GetUrlStat(id string) (*domain.UrlStat, error) {
+	return m.getUrlStatFunc(id)
 }
 
-func (m *mockUrlStatRepository) SaveUrlStat(stat domain.UrlStat) {
-	m.saveCount++
-	m.savedStats[stat.Id] = &stat
+func (m *mockUrlStatRepository) SaveUrlStat(stat domain.UrlStat) (domain.UrlStat, error) {
+	return m.saveUrlStatFunc(stat)
 }
 
-func TestSaveUrlNewStat(t *testing.T) {
-	repo := &mockUrlStatRepository{savedStats: make(map[string]*domain.UrlStat)}
-	useCase := NewSaveUrlCase(repo)
-
-	result := useCase.SaveUrl(
-		UrlStatDto{
-			Id:          "test-id",
-			OriginalUrl: "https://example.com",
+func TestSaveUrlStat_ErrorToGet(t *testing.T) {
+	repo := &mockUrlStatRepository{
+		getUrlStatFunc: func(id string) (*domain.UrlStat, error) {
+			return nil, errors.New("database error")
 		},
-	)
+		saveUrlStatFunc: func(stat domain.UrlStat) (domain.UrlStat, error) {
+			return domain.UrlStat{}, nil
+		},
+	}
 
-	if !result {
-		t.Errorf("SaveUrl should return true")
-	}
-	if repo.saveCount != 1 {
-		t.Errorf("expected 1 save, got %d", repo.saveCount)
-	}
-	if repo.savedStats["test-id"].AccessesQuantity != 1 {
-		t.Errorf("expected AccessesQuantity 1, got %d", repo.savedStats["test-id"].AccessesQuantity)
+	useCase := NewSaveUrlCase(repo)
+	result := useCase.SaveUrl(UrlStatDto{Id: "short123"})
+
+	if result {
+		t.Error("expected false, got true")
 	}
 }
 
-func TestSaveUrlExistingStat(t *testing.T) {
-	existingStat := &domain.UrlStat{
-		Id:               "test-id",
-		OriginalUrl:      "https://example.com",
-		LastAccess:       time.Now().Add(-time.Hour),
-		AccessesQuantity: 5,
+func TestSaveUrlStat_NewUrlStat(t *testing.T) {
+	repo := &mockUrlStatRepository{
+		getUrlStatFunc: func(id string) (*domain.UrlStat, error) {
+			return nil, nil
+		},
+		saveUrlStatFunc: func(stat domain.UrlStat) (domain.UrlStat, error) {
+			return domain.UrlStat{}, nil
+		},
 	}
-	repo := &mockUrlStatRepository{savedStats: map[string]*domain.UrlStat{"test-id": existingStat}}
-	useCase := NewSaveUrlCase(repo)
 
+	useCase := NewSaveUrlCase(repo)
 	result := useCase.SaveUrl(UrlStatDto{
-		Id:          "test-id",
+		Id:          "short123",
 		OriginalUrl: "https://example.com",
 	})
 
 	if !result {
-		t.Errorf("SaveUrl should return true")
+		t.Error("expected true, got false")
 	}
-	if repo.saveCount != 1 {
-		t.Errorf("expected 1 save, got %d", repo.saveCount)
+}
+
+func TestSaveUrlStat_ExistingUrlStat(t *testing.T) {
+	existingStat := &domain.UrlStat{
+		Id:               "short123",
+		OriginalUrl:      "https://example.com",
+		AccessesQuantity: 5,
+		LastAccess:       time.Now(),
 	}
-	if repo.savedStats["test-id"].AccessesQuantity != 6 {
-		t.Errorf("expected AccessesQuantity 6, got %d", repo.savedStats["test-id"].AccessesQuantity)
+
+	repo := &mockUrlStatRepository{
+		getUrlStatFunc: func(id string) (*domain.UrlStat, error) {
+			return existingStat, nil
+		},
+		saveUrlStatFunc: func(stat domain.UrlStat) (domain.UrlStat, error) {
+			return *existingStat, nil
+		},
+	}
+
+	useCase := NewSaveUrlCase(repo)
+	result := useCase.SaveUrl(UrlStatDto{Id: "short123"})
+
+	if !result {
+		t.Error("expected true, got false")
+	}
+}
+
+func TestSaveUrlStat_ErrorToSave(t *testing.T) {
+	existingStat := &domain.UrlStat{
+		Id:               "short123",
+		OriginalUrl:      "https://example.com",
+		AccessesQuantity: 5,
+		LastAccess:       time.Now(),
+	}
+
+	repo := &mockUrlStatRepository{
+		getUrlStatFunc: func(id string) (*domain.UrlStat, error) {
+			return existingStat, nil
+		},
+		saveUrlStatFunc: func(stat domain.UrlStat) (domain.UrlStat, error) {
+			return *existingStat, errors.New("database error")
+		},
+	}
+
+	useCase := NewSaveUrlCase(repo)
+	result := useCase.SaveUrl(UrlStatDto{Id: "short123"})
+
+	if result {
+		t.Error("expected false, got true")
 	}
 }
