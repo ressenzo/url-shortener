@@ -21,12 +21,14 @@ func NewSaveUrlCase(repo UrlStatRepository) SaveUrlStatUseCase {
 }
 
 func (s *saveUrlUseCase) SaveUrl(request UrlStatDto) bool {
+	log.Println("Start process for '" + request.Id + "'")
 	urlStat, err := s.urlStatRepo.GetUrlStat(request.Id)
 	if err != nil {
 		log.Println("Error to get url stat", err)
 		return false
 	}
 	if urlStat == nil {
+		log.Println("Url stat is new. Creating new one...")
 		urlStat = &domain.UrlStat{
 			Id:               request.Id,
 			OriginalUrl:      request.OriginalUrl,
@@ -34,6 +36,7 @@ func (s *saveUrlUseCase) SaveUrl(request UrlStatDto) bool {
 			AccessesQuantity: 1,
 		}
 	} else {
+		log.Println("Url stat is old. Adding access...")
 		urlStat.AddAccess()
 	}
 	_, err = saveUrlStat(s, urlStat)
@@ -41,7 +44,7 @@ func (s *saveUrlUseCase) SaveUrl(request UrlStatDto) bool {
 		log.Println("Error to save url stat", err)
 		return false
 	}
-
+	log.Println("End of process for '" + request.Id + "'")
 	return true
 }
 
