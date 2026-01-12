@@ -26,6 +26,9 @@ func (u *urlStatRepository) GetUrlStat(id string) (*domain.UrlStat, error) {
 	var urlStatModel UrlStatModel
 	err := u.collection.FindOne(context.Background(), filter).Decode(&urlStatModel)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
 		return nil, err
 	}
 
