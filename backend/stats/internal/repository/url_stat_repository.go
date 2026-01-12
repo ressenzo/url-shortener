@@ -7,6 +7,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type urlStatRepository struct {
@@ -42,6 +43,14 @@ func (u *urlStatRepository) GetUrlStat(id string) (*domain.UrlStat, error) {
 }
 
 func (u *urlStatRepository) SaveUrlStat(urlStat domain.UrlStat) (domain.UrlStat, error) {
-	_, err := u.collection.InsertOne(context.Background(), urlStat)
+	urlStatModel := UrlStatModel{
+		Id:               urlStat.Id,
+		OriginalUrl:      urlStat.OriginalUrl,
+		LastAccess:       urlStat.LastAccess,
+		AccessesQuantity: urlStat.AccessesQuantity,
+	}
+	filter := bson.M{"_id": urlStatModel.Id}
+	opts := options.Replace().SetUpsert(true)
+	_, err := u.collection.ReplaceOne(context.Background(), filter, urlStatModel, opts)
 	return urlStat, err
 }
