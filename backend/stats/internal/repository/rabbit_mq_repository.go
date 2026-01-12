@@ -30,7 +30,7 @@ func (c *rabbitMqConsumer) Start() error {
 	msgs, err := c.channel.Consume(
 		c.queueName,
 		"",
-		true,
+		false,
 		false,
 		false,
 		false,
@@ -46,7 +46,8 @@ func (c *rabbitMqConsumer) Start() error {
 			var payload application.UrlStatDto
 			if err := json.Unmarshal(msg.Body, &payload); err != nil {
 				log.Println("Invalid message", err)
-				return
+				c.channel.Nack(msg.DeliveryTag, false, false)
+				continue
 			}
 
 			result := c.useCase.SaveUrl(payload)
