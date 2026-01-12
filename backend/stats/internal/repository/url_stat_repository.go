@@ -21,14 +21,20 @@ func NewUrlStatRepository(db *mongo.Database) application.UrlStatRepository {
 
 func (u *urlStatRepository) GetUrlStat(id string) (*domain.UrlStat, error) {
 	filter := bson.M{
-		"id": id,
+		"_id": id,
 	}
-	var urlStat domain.UrlStat
-	err := u.collection.FindOne(context.Background(), filter).Decode(&urlStat)
+	var urlStatModel UrlStatModel
+	err := u.collection.FindOne(context.Background(), filter).Decode(&urlStatModel)
 	if err != nil {
 		return nil, err
 	}
 
+	urlStat := domain.UrlStat{
+		Id:               urlStatModel.Id,
+		OriginalUrl:      urlStatModel.OriginalUrl,
+		AccessesQuantity: urlStatModel.AccessesQuantity,
+		LastAccess:       urlStatModel.LastAccess,
+	}
 	return &urlStat, nil
 }
 
