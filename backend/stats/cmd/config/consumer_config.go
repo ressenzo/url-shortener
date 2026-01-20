@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"url-shortener/stats/internal/application"
 	"url-shortener/stats/internal/repository"
 
@@ -9,7 +10,12 @@ import (
 )
 
 func ConsumerConfig(useCase application.SaveUrlStatUseCase) {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	rabbitMqUrl := os.Getenv("RABBITMQ_URL")
+	if rabbitMqUrl == "" {
+		rabbitMqUrl = "amqp://guest:guest@localhost:5672/"
+	}
+
+	conn, err := amqp.Dial(rabbitMqUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,6 +26,7 @@ func ConsumerConfig(useCase application.SaveUrlStatUseCase) {
 	}
 
 	queueName := "url-shortener.access"
+
 	ch.QueueDeclare(queueName, true, false, false, false, nil)
 
 	consumer := repository.NewRabbitMqConsumer(
