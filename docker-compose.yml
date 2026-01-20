@@ -68,12 +68,8 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
-      - ConnectionStrings__Mongo=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
-      - RabbitMqSettings__HostName=url-shortener-rabbitmq
-      - RabbitMqSettings__Port=5672
-      - RabbitMqSettings__VirtualHost=/
-      - RabbitMqSettings__UserName=admin
-      - RabbitMqSettings__Password=admin123
+      - MONGODB_URI=mongodb://admin:admin123@url-shortener-mongo:27017/?authSource=admin
+      - RABBITMQ_URL=amqp://admin:admin123@url-shortener-rabbitmq:5672/
     depends_on:
       url-shortener-mongo:
         condition: service_healthy

@@ -1,34 +1,30 @@
-# Stage 1: Build
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+# Build stage
+FROM golang:1.23-alpine AS builder
+
 WORKDIR /app
 
-# Copy everything into the container
-COPY ./src ./src
-COPY Directory.Packages.props .
-COPY Directory.Build.props .
-COPY nuget.config .
+# Copy go mod files
+COPY go.mod go.sum ./
 
-# Restore dependencies
-WORKDIR /app/src/UrlShortener.Stats.Worker
-RUN dotnet nuget list source
-RUN --mount=type=secret,id=nuget_token,target=/tmp/nuget_token \
-    dotnet nuget update source github \
-    --username ressenzo \
-    --password $(cat /tmp/nuget_token) \
-    --store-password-in-clear-text \
- 	&& dotnet restore
+# Download dependencies
+RUN go mod download
 
-# Build the app
-RUN dotnet publish -c Release -o /app/out
+# Copy source code
+COPY . .
 
-# Stage 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
-WORKDIR /app
+# Build the application
+RUN go build -o main ./cmd/consumer
 
-ENV ConnectionStrings:Mongo=mongodb://admin:admin123@localhost:27017?directConnection=true&serverSelectionTimeoutMS=2000
+# Runtime stage
+FROM alpine:latest
 
-# Copy build artifacts from build stage
-COPY --from=build /app/out ./
+# Install ca-certificates for HTTPS connections
+RUN apk --no-cache add ca-certificates
 
-# Run the app
-ENTRYPOINT ["dotnet", "UrlShortener.Stats.Worker.dll"]
+WORKDIR /root/
+
+# Copy the binary from builder stage
+COPY --from=builder /app/main .
+
+# Run the application
+CMD ["./main"]
