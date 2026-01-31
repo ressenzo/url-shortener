@@ -65,7 +65,6 @@ jobs:
                 /p:CoverletOutputFormat=cobertura \
                 /p:Threshold=90 \
                 /p:ThresholdType=line
-                --logger "trx;LogFileName=$dir/coverage/TestResults.trx"
 
                 echo "✅ .NET project coverage report saved at $COVERAGE_FILE"
             fi
