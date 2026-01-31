@@ -55,13 +55,19 @@ jobs:
             if ls "$dir"/*.slnx 1> /dev/null 2>&1 || ls "$dir"/*.csproj 1> /dev/null 2>&1; then
               echo "🟦 Detected .NET project in $dir"
 
+              COVERAGE_FILE="$dir/coverage/coverage.xml"
+              mkdir -p "$dir/coverage"
+
               dotnet test "$dir" \
-              --configuration Release \
-              /p:CollectCoverage=true \
-              /p:CoverletOutput="$dir/coverage/coverage.xml" \
-              /p:CoverletOutputFormat=cobertura \
-              /p:Threshold=90 \
-              /p:ThresholdType=line
+                --configuration Release \
+                /p:CollectCoverage=true \
+                /p:CoverletOutput="$COVERAGE_FILE" \
+                /p:CoverletOutputFormat=cobertura \
+                /p:Threshold=90 \
+                /p:ThresholdType=line
+                --logger "trx;LogFileName=$dir/coverage/TestResults.trx"
+
+                echo "✅ .NET project coverage report saved at $COVERAGE_FILE"
             fi
 
             # --------------------
