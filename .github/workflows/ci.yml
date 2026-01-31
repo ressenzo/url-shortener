@@ -56,10 +56,12 @@ jobs:
               echo "🟦 Detected .NET project in $dir"
 
               dotnet test "$dir" \
-                --configuration Release \
-                --collect:"XPlat Code Coverage" \
-                --results-directory "$dir/coverage" \
-                -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.MinimumCoverage=90
+              --configuration Release \
+              /p:CollectCoverage=true \
+              /p:CoverletOutput="$dir/coverage/coverage.xml" \
+              /p:CoverletOutputFormat=cobertura \
+              /p:Threshold=90 \
+              /p:ThresholdType=line
             fi
 
             # --------------------
