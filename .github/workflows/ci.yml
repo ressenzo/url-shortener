@@ -1,0 +1,63 @@
+name: Monorepo CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  dotnet-tests:
+  name: .NET Tests & Coverage
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v4
+
+  - name: Setup .NET
+    uses: actions/setup-dotnet@v4
+    with:
+      dotnet-version: 10.0.x
+
+  - name: Restore
+    run: dotnet restore
+    working-directory: dotnet
+
+  - name: Test with coverage (>= 90%)
+    working-directory: dotnet
+    run: |
+      dotnet test \
+        --configuration Release \
+        --collect:"XPlat Code Coverage" \
+        --results-directory ./coverage \
+        -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.MinimumCoverage=90
+
+  go-tests:
+    name: Go Tests & Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.23.x
+
+    - name: Run tests with coverage
+      working-directory: go/service-x
+      run: |
+        go test ./... -coverprofile=coverage.out -covermode=atomic
+
+    - name: Verify coverage >= 90%
+      working-directory: go/service-x
+      run: |
+        COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
+        echo "Total coverage: $COVERAGE%"
+
+        if (( $(echo "$COVERAGE < 90.0" | bc -l) )); then
+          echo "❌ Coverage below 90%"
+          exit 1
+        fi
+
+        echo "✅ Coverage OK"
